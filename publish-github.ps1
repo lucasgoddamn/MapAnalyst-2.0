@@ -111,7 +111,12 @@ try {
   }
 
   # Push export branch to GitHub target branch
-  $remoteBranch = (& git -C $worktreeDir ls-remote --heads $GitHubRemoteName $GitHubTargetBranch).Trim()
+  $remoteBranchOut = & git -C $worktreeDir ls-remote --heads $GitHubRemoteName $GitHubTargetBranch
+  if ($null -eq $remoteBranchOut) {
+    $remoteBranch = ""
+  } else {
+    $remoteBranch = (($remoteBranchOut -join "`n")).Trim()
+  }
   if ([string]::IsNullOrWhiteSpace($remoteBranch)) {
     Invoke-Git $worktreeDir @("push", "-u", $GitHubRemoteName, "$ExportBranch`:$GitHubTargetBranch")
   } else {
