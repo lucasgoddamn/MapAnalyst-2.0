@@ -1,0 +1,73 @@
+{
+  "main": [
+    {
+      "name": "Home",
+      "url": "/"
+    },
+    {
+      "name": "Blog",
+      "url": "/blog"
+    },
+    {
+      "name": "MapAnalyst",
+      "url": "/mapanalyst"
+    },
+    {
+      "name": "Contact",
+      "url": "/contact"
+    },
+    {
+      "name": "FAQ",
+      "url": "/faq"
+    },
+    {
+      "name": "Docs",
+      "url": "/docs"
+    }
+  ],
+  "footer": [
+    {
+      "name": "Application",
+      "menu": [
+        {
+          "text": "Mapanalyst",
+          "url": "/mapanalyst"
+        }
+      ]
+    },
+    {
+      "name": "Docs",
+      "menu": [
+        {
+          "text": "Manual",
+          "url": "/docs/manual"
+        },
+        {
+          "text": "Tutorial",
+          "url": "/docs/tutorial"
+        },
+        {
+          "text": "Code",
+          "url": "#"
+        }
+      ]
+    },
+    {
+      "name": "Support",
+      "menu": [
+        {
+          "text": "FAQ",
+          "url": "/faq"
+        },
+        {
+          "text": "Privacy Policy",
+          "url": "/privacy-policy"
+        },
+        {
+          "text": "Terms & Conditions",
+          "url": "/terms-conditions"
+        }
+      ]
+    }
+  ]
+}

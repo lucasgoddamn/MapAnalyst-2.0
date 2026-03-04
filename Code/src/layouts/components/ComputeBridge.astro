@@ -1,0 +1,118 @@
+---
+/**
+ * Listens for `mapanalyst:compute` from Toolbar and posts payload to the backend.
+ * Requires MapInteractions to expose:
+ *   - window.mapanalystGetState(): { oldPoints, newPoints, links }
+ * If that function isn't present yet, see the fallback shim below.
+ */
+---
+
+<script is:inline>
+  // --- helper: stringify download ---
+  function downloadJson(name, obj) {
+    const blob = new Blob([JSON.stringify(obj, null, 2)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  // --- Fallback shim if MapInteractions didn't publish yet  -----------------
+  // You already have `window.getLinks()` in some versions. We try to read it.
+  // If your current MapInteractions exposes a better helper, just remove this shim.
+  if (typeof window.mapanalystGetState !== "function") {
+    window.mapanalystGetState = () => {
+      const get = (id) => document.getElementById(id);
+      console.warn(
+        "[ComputeBridge] mapanalystGetState() is using a fallback shim. " +
+          "Please expose it from MapInteractions to include real points."
+      );
+      // Minimal echo to keep the flow working; replace by real state when we expose it.
+      const links =
+        typeof window.getLinks === "function" ? window.getLinks() : [];
+      return {
+        oldPoints: [], // TODO: MapInteractions should provide these
+        newPoints: [], // TODO: MapInteractions should provide these
+        links: links.map((ln) => ({
+          old_index: -1,
+          new_index: -1,
+          name: ln.name || null,
+        })),
+      };
+    };
+  }
+
+  // --- Listen for the Toolbar action and call backend -----------------------
+  window.addEventListener("mapanalyst:compute", async (ev) => {
+    const analysis = ev.detail || {};
+    const state = window.mapanalystGetState?.() || {
+      oldPoints: [],
+      newPoints: [],
+      links: [],
+    };
+
+    // Convert Leaflet lat/lng (if provided) to API x/y = lng/lat
+    const old_points = state.oldPoints.map((p) => ({
+      x: +p.lng,
+      y: +p.lat,
+      name: p.name || null,
+    }));
+    const new_points = state.newPoints.map((p) => ({
+      x: +p.lng,
+      y: +p.lat,
+      name: p.name || null,
+    }));
+    const links = state.links.map((ln) => ({
+      old_index: ln.old_index ?? ln.oldIndex ?? ln.old ?? -1,
+      new_index: ln.new_index ?? ln.newIndex ?? ln.new ?? -1,
+      name: ln.name ?? null,
+    }));
+
+    const payload = {
+      target_map: String(analysis.mapTarget || "old"),
+      estimator: {
+        kind: String(analysis.transformation || "helmert4"),
+        robust: analysis.robustKind || null,
+        huber: analysis.huber || null,
+        v: analysis.v || null,
+        hampel: analysis.hampel || null,
+      },
+      old_points,
+      new_points,
+      links,
+      grid: { enabled: false },
+      displacements: { enabled: false },
+      isolines: { enabled: false },
+    };
+
+    try {
+      const res = await fetch("http://localhost:8000/api/compute", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) {
+        const err = await res.text();
+        alert("Backend error:\n" + err);
+        return;
+      }
+      const data = await res.json();
+      console.log("[compute] response:", data);
+      // For now, just show a tiny confirmation and offer a JSON download:
+      alert(
+        `Compute stub OK.\nLinks: ${data.n_links}, Old: ${data.n_old}, New: ${data.n_new}\n(${data.message})`
+      );
+      // Optional: auto-download the echo to help you inspect payloads
+      // downloadJson('compute-response.json', data);
+    } catch (e) {
+      console.error(e);
+      alert("Could not reach backend at http://localhost:8000/api/compute");
+    }
+  });
+</script>

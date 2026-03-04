@@ -1,0 +1,82 @@
+---
+import DocsLayout from "@/layouts/DocsLayout.astro";
+import DocsImage from "@/components/DocsImage.astro";
+
+const nav = [
+  {
+    title: "Docs",
+    items: [
+      { text: "Quick overview", href: "#overview" },
+      { text: "Start here", href: "#start" },
+    ],
+  },
+  {
+    title: "Jump",
+    items: [
+      { text: "Tutorial", href: "/docs/tutorial" },
+      { text: "Manual", href: "/docs/manual" },
+    ],
+  },
+];
+
+const footerLinks = [
+  { text: "Tutorial", href: "/docs/tutorial" },
+  { text: "Manual", href: "/docs/manual" },
+];
+---
+
+<DocsLayout
+  title="Docs"
+  description="MapAnalyst 2.0 documentation overview"
+  sidebarTitle="Docs"
+  nav={nav}
+  footerLinks={footerLinks}
+>
+  <div class="content">
+    <h1 id="overview">MapAnalyst 2.0 Documentation</h1>
+    <p>
+      This documentation explains how to use MapAnalyst 2.0. Start with the
+      tutorial if you want a guided workflow. Use the manual if you need a
+      complete reference for every button and visualization.
+    </p>
+
+    <DocsImage
+      name="overview-pic.jpg"
+      hint="overview-pic.jpg"
+      height="12rem"
+    />
+
+    <h2 id="start" class="mt-10">Start here</h2>
+    <p>
+      Choose one of the two tracks below. Both pages include a sidebar for fast
+      navigation.
+    </p>
+
+    <div class="not-prose mt-8">
+      <div class="row -mt-6">
+        <div class="col-12 mt-6 md:col-6">
+          <div class="rounded-lg border border-border bg-white p-6 shadow">
+            <h3 class="text-lg font-semibold text-dark">Tutorial</h3>
+            <p class="mt-2 text-sm text-text">
+              Step by step workflow from map upload to final analysis.
+            </p>
+            <a class="btn btn-primary mt-4" href="/docs/tutorial">
+              Open tutorial
+            </a>
+          </div>
+        </div>
+        <div class="col-12 mt-6 md:col-6">
+          <div class="rounded-lg border border-border bg-white p-6 shadow">
+            <h3 class="text-lg font-semibold text-dark">Manual</h3>
+            <p class="mt-2 text-sm text-text">
+              Full reference for every menu item, tool, and visualization.
+            </p>
+            <a class="btn btn-outline-primary mt-4" href="/docs/manual">
+              Open manual
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocsLayout>

@@ -1,0 +1,445 @@
+---
+import DocsLayout from "@/layouts/DocsLayout.astro";
+import DocsImage from "@/components/DocsImage.astro";
+
+const nav = [
+  {
+    title: "Layout",
+    items: [{ text: "Interface overview", href: "#layout" }],
+  },
+  {
+    title: "Menus",
+    items: [
+      { text: "File", href: "#menu-file" },
+      { text: "Edit", href: "#menu-edit" },
+      { text: "Maps", href: "#menu-maps" },
+      { text: "Analyze", href: "#menu-analyze" },
+      { text: "View", href: "#menu-view" },
+      { text: "Help", href: "#menu-help" },
+    ],
+  },
+  {
+    title: "Tools and panels",
+    items: [
+      { text: "Map tools toolbar", href: "#map-tools" },
+      { text: "Map view", href: "#map-view" },
+      { text: "Selected points panel", href: "#selected-panel" },
+      { text: "Linked points modal", href: "#linked-modal" },
+      { text: "Suggestions", href: "#suggestions" },
+      { text: "Distortion grid", href: "#settings-distortion" },
+      { text: "Displacements", href: "#settings-displacements" },
+      { text: "Isolines", href: "#settings-isolines" },
+    ],
+  },
+  {
+    title: "Results",
+    items: [
+      { text: "Visualizations", href: "#visualizations" },
+      { text: "Reports", href: "#reports" },
+      { text: "Shortcuts", href: "#shortcuts" },
+    ],
+  },
+];
+
+const footerLinks = [
+  { text: "Overview", href: "/docs" },
+  { text: "Tutorial", href: "/docs/tutorial" },
+];
+---
+
+<DocsLayout
+  title="Manual"
+  description="Manual reference for MapAnalyst 2.0"
+  sidebarTitle="Manual"
+  nav={nav}
+  footerLinks={footerLinks}
+>
+  <div class="content">
+    <h1 id="layout">Manual for MapAnalyst 2.0</h1>
+    <p>
+      This manual lists every menu item, toolbar button, panel, and
+      visualization. Use it as a quick reference while working.
+    </p>
+
+    <h2 id="menu-file" class="mt-10">File menu</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Action</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Upload Old Map</td>
+          <td>Load the historical map image (PNG or JPG).</td>
+        </tr>
+        <tr>
+          <td>Upload New Map</td>
+          <td>Load a modern map image instead of OSM.</td>
+        </tr>
+        <tr>
+          <td>Export - Old Map</td>
+          <td>Save old map points to a text file (x y, pixels).</td>
+        </tr>
+        <tr>
+          <td>Export - New Map</td>
+          <td>Save new map points to a text file (lng lat).</td>
+        </tr>
+        <tr>
+          <td>Export - Linked Points</td>
+          <td>Save linked pairs with names (oldX oldY newLat newLng).</td>
+        </tr>
+        <tr>
+          <td>Import - Linked Points</td>
+          <td>Load linked pairs from a text file.</td>
+        </tr>
+        <tr>
+          <td>Import - Old Map</td>
+          <td>Load old map points from a text file.</td>
+        </tr>
+        <tr>
+          <td>Import - New Map</td>
+          <td>Load new map points from a text file.</td>
+        </tr>
+      </tbody>
+    </table>
+    <blockquote>
+      File format quick reference: old points are x y, new points are lng lat,
+      and linked points are oldX oldY newLat newLng name.
+    </blockquote>
+    <DocsImage
+      name="manual-file-menu.jpg"
+      hint="manual-file-menu.jpg"
+      caption="File menu with import and export submenus."
+      height="10rem"
+    />
+
+    <h2 id="menu-edit" class="mt-10">Edit menu</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Action</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Undo</td>
+          <td>Revert the last point, link, or polygon change.</td>
+        </tr>
+        <tr>
+          <td>Redo</td>
+          <td>Reapply the last undone change.</td>
+        </tr>
+        <tr>
+          <td>List Linked Points</td>
+          <td>Open the linked points and suggestions dialog.</td>
+        </tr>
+      </tbody>
+    </table>
+    <DocsImage
+      name="manual-edit-menu.jpg"
+      hint="manual-edit-menu.jpg"
+      caption="Edit menu."
+      height="4rem"
+    />
+
+    <h2 id="menu-maps" class="mt-10">Maps menu</h2>
+    <p>
+      The Maps menu is reserved for future options. It currently shows a
+      placeholder entry.
+    </p>
+
+    <h2 id="menu-analyze" class="mt-10">Analyze menu</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Action</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Compute</td>
+          <td>Run the transformation and update visualizations.</td>
+        </tr>
+        <tr>
+          <td>Show Report of Last Computation</td>
+          <td>Open the parameters and residuals report.</td>
+        </tr>
+        <tr>
+          <td>Compare Transformations</td>
+          <td>Run multiple models and compare summaries.</td>
+        </tr>
+        <tr>
+          <td>Target Map - Old</td>
+          <td>Transform the old map to match the new map.</td>
+        </tr>
+        <tr>
+          <td>Target Map - New</td>
+          <td>Transform the new map to match the old map.</td>
+        </tr>
+        <tr>
+          <td>Helmert 4 Parameters</td>
+          <td>Similarity transform with scale, rotation, and shift.</td>
+        </tr>
+        <tr>
+          <td>Affine 5 Parameters</td>
+          <td>Affine transform with scale and rotation differences.</td>
+        </tr>
+        <tr>
+          <td>Affine 6 Parameters</td>
+          <td>Full affine transform with shear.</td>
+        </tr>
+        <tr>
+          <td>Robust Helmert Estimator</td>
+          <td>Helmert with robust weighting (Huber, V, Hampel).</td>
+        </tr>
+        <tr>
+          <td>Robust Parameters</td>
+          <td>Set k, e, or a/b/c values for each estimator.</td>
+        </tr>
+      </tbody>
+    </table>
+    <blockquote>
+      Robust parameter ranges: Huber k (0 to 4), V k (0 to 4), V e (0 to 1),
+      Hampel a (0 to 4), Hampel b (1 to 6), Hampel c (2 to 12).
+    </blockquote>
+    <DocsImage
+      name="manual-analyze-menu.jpg"
+      hint="mmanual-analyze-menu.jpg"
+      caption="Analyze menu and estimator dialogs."
+      height="10rem"
+    />
+
+    <h2 id="menu-view" class="mt-10">View menu</h2>
+    <p>
+      The View menu is reserved for future options. It currently shows a
+      placeholder entry.
+    </p>
+
+    <h2 id="menu-help" class="mt-10">Help menu</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Action</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Info</td>
+          <td>Open the project information modal.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="map-tools" class="mt-10">Map tools toolbar</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Tool</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Compute</td>
+          <td>Runs the analysis (same as Analyze menu).</td>
+        </tr>
+        <tr>
+          <td>Suggest Links</td>
+          <td>Open suggestion settings and compute candidates.</td>
+        </tr>
+        <tr>
+          <td>Select Rect</td>
+          <td>Drag a rectangle to select multiple points.</td>
+        </tr>
+        <tr>
+          <td>New Point</td>
+          <td>Add a point to the active map on click.</td>
+        </tr>
+        <tr>
+          <td>Move Point</td>
+          <td>Drag selected points to new locations.</td>
+        </tr>
+        <tr>
+          <td>Delete</td>
+          <td>Delete selected points or click a point to remove.</td>
+        </tr>
+        <tr>
+          <td>Measure</td>
+          <td>Measure distance and angle on each map.</td>
+        </tr>
+        <tr>
+          <td>Draw Polygon</td>
+          <td>Draw a polygon for custom extents and suggestions.</td>
+        </tr>
+        <tr>
+          <td>Show All</td>
+          <td>Reset map views to full extent.</td>
+        </tr>
+        <tr>
+          <td>Points Visibility</td>
+          <td>Adjust point size and opacity per map.</td>
+        </tr>
+      </tbody>
+    </table>
+    <DocsImage
+      name="manual-maptools-menu.jpg"
+      hint="manual-maptools-menu.jpg"
+      caption="Map tools toolbar with labels."
+      height="10rem"
+    />
+
+    <h2 id="map-view" class="mt-10">Map view behavior</h2>
+    <ul>
+      <li>Left map uses pixel coordinates for uploaded images.</li>
+      <li>Right map defaults to OSM (lat and lng), or an uploaded image.</li>
+      <li>Selected points are red, linked points are pink and unselected points in blue.</li>
+      <li>Click a point to select or deselect it.</li>
+      <li>Double click when drawing a polygon to finish it.</li>
+    </ul>
+    <DocsImage
+      name="manual-map-view.jpg"
+      hint="manual-map-view.jpg"
+      caption="Markers and their colors."
+      height="10rem"
+    />
+
+    <h2 id="selected-panel" class="mt-10">Selected points panel</h2>
+    <ul>
+      <li>Shows coordinates of the currently selected points.</li>
+      <li>Link button creates a pair when one point is selected on each map.</li>
+      <li>Rename button edits the link name.</li>
+      <li>List button opens the full linked points modal.</li>
+      <li>Scale and rotation fields are reserved for computed summaries.</li>
+    </ul>
+    <DocsImage
+      name="manual-sel-points.jpg"
+      hint="manual-sel-points.jpg"
+      caption="Selected points panel close up."
+      height="9rem"
+    />
+
+    <h2 id="linked-modal" class="mt-10">Linked points modal</h2>
+    <ul>
+      <li>Lists all current links with rename and delete actions.</li>
+      <li>Shows a summary count of links.</li>
+      <li>Contains the suggested links table and controls.</li>
+    </ul>
+    <DocsImage
+      name="tutorial-rec-window.jpg"
+      hint="manual-linked-points.png"
+      caption="Linked points modal with tables."
+      height="10rem"
+    />
+
+    <h2 id="suggestions" class="mt-10">Suggestion tools</h2>
+    <ul>
+      <li>Suggestion config sets minimum distance and max count.</li>
+      <li>Ghost markers appear on both maps for each suggestion.</li>
+      <li>Accept, dismiss, or focus suggestions from the list or popup.</li>
+      <li>Accept All applies every remaining suggestion.</li>
+    </ul>
+    <DocsImage
+      name="tutorial-rec.jpg"
+      hint="manual-suggestions.png"
+      caption="Suggestion config dialog and popup actions."
+      height="10rem"
+    />
+
+    <h2 id="settings-distortion" class="mt-10">Distortion grid settings</h2>
+    <ul>
+      <li>Show: toggles the distortion grid overlay.</li>
+      <li>Show undistorted grid: overlay the reference grid.</li>
+      <li>Mesh size and unit: control grid spacing.</li>
+      <li>Extent: rectangular, around points, or custom polygon.</li>
+      <li>Smoothness: adjust grid interpolation.</li>
+      <li>Appearance: color, thickness, and labels.</li>
+      <li>Uncertain areas: fade grid where data is sparse.</li>
+      <li>More: open uncertainty quantile, exaggeration, and offset.</li>
+    </ul>
+    <DocsImage
+      name="manual-dist.jpg"
+      hint="manual-dist.jpg"
+      caption="Distortion grid tab and options modal."
+      height="10rem"
+    />
+
+    <h2 id="settings-displacements" class="mt-10">Displacements settings</h2>
+    <ul>
+      <li>Show: enable displacement visualization.</li>
+      <li>Mode: vectors, circles, or both.</li>
+      <li>Scale factor: scale vector lengths.</li>
+      <li>Mark outliers: highlight residuals above 3 sigma.</li>
+      <li>Full circles: fill circles with a chosen color.</li>
+      <li>Colors and thickness control styling.</li>
+    </ul>
+    <DocsImage
+      name="manual-displ.jpg"
+      hint="manual-displ.jpg"
+      caption="Displacements tab."
+      height="10rem"
+    />
+
+    <h2 id="settings-isolines" class="mt-10">Isolines settings</h2>
+    <ul>
+      <li>Scale isolines: interval, color, thickness.</li>
+      <li>Rotation isolines: interval, color, thickness.</li>
+      <li>Radius of influence sets smoothing radius in meters.</li>
+    </ul>
+    <DocsImage
+      name="manual-iso.jpg"
+      hint="manual-isolines.png"
+      caption="Isolines tab with scale and rotation blocks."
+      height="10rem"
+    />
+
+    <h2 id="reports" class="mt-10">Reports and comparison</h2>
+    <ul>
+      <li>Computation report lists parameters and residuals.</li>
+      <li>Comparison summary prints scale, rotation, and deviations.</li>
+      <li>Use these for method justification in your thesis.</li>
+    </ul>
+    <DocsImage
+      name="tutorial-comparison.jpg"
+      hint="tutorial-comparison.jpg"
+      caption="Report and comparison modal."
+      height="10rem"
+    />
+
+    <h2 id="shortcuts" class="mt-10">Keyboard shortcuts</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Shortcut</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Ctrl + K</td>
+          <td>Compute</td>
+        </tr>
+        <tr>
+          <td>Ctrl + Z</td>
+          <td>Undo</td>
+        </tr>
+        <tr>
+          <td>Ctrl + Y</td>
+          <td>Redo</td>
+        </tr>
+        <tr>
+          <td>Delete</td>
+          <td>Enter delete mode for selected points or polygons.</td>
+        </tr>
+        <tr>
+          <td>Esc</td>
+          <td>Close open menus or popovers.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</DocsLayout>

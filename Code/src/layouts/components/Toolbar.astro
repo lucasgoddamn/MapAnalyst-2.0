@@ -1,0 +1,1181 @@
+---
+import { getEntry, render } from "astro:content";
+const infoEntry = await getEntry("pages", "info");
+const { Content } = infoEntry ? await render(infoEntry) : { Content: null };
+---
+
+<nav class="bg-gray-800 text-white p-2 relative z-[2000] select-none">
+  <div class="container mx-auto flex items-center gap-6">
+    <!-- ========= File ========= -->
+    <div class="relative">
+      <button
+        class="top-btn hover:underline"
+        data-open="menu-file"
+        data-root="true"
+        type="button"
+      >
+        File
+      </button>
+      <div id="menu-file" class="menu-panel w-64">
+        <button class="menu-item" id="mi-upload-old">Upload Old Map</button>
+        <button class="menu-item" id="mi-upload-new">Upload New Map</button>
+        <div class="divider"></div>
+
+        <!-- Export -->
+        <div class="relative">
+          <button
+            class="menu-item justify-between"
+            data-open="submenu-export"
+            type="button"
+          >
+            Export <span class="ml-4">›</span>
+          </button>
+          <div id="submenu-export" class="menu-panel submenu w-72">
+            <button class="menu-item" id="mi-export-old"
+              >Of Old Map (.txt)</button
+            >
+            <button class="menu-item" id="mi-export-new"
+              >Of New Map (.txt)</button
+            >
+            <button class="menu-item" id="mi-export-linked"
+              >Linked Points of Old and New Map (.txt)</button
+            >
+          </div>
+        </div>
+
+        <!-- Import -->
+        <div class="relative">
+          <button
+            class="menu-item justify-between"
+            data-open="submenu-import"
+            type="button"
+          >
+            Import <span class="ml-4">›</span>
+          </button>
+          <div id="submenu-import" class="menu-panel submenu w-72">
+            <button class="menu-item" id="mi-import-linked"
+              >Linked Points for Old and New Map (.txt)</button
+            >
+            <button class="menu-item" id="mi-import-old"
+              >Of Old Map (.txt)</button
+            >
+            <button class="menu-item" id="mi-import-new"
+              >Of New Map (.txt)</button
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========= Edit ========= -->
+    <div class="relative">
+      <button
+        class="top-btn hover:underline"
+        data-open="menu-edit"
+        data-root="true"
+        type="button"
+      >
+        Edit
+      </button>
+      <div id="menu-edit" class="menu-panel w-56">
+        <button class="menu-item" id="btn-undo">Undo</button>
+        <button class="menu-item" id="btn-redo">Redo</button>
+        <div class="divider"></div>
+        <button class="menu-item" id="btn-list-links">List Linked Points</button
+        >
+      </div>
+    </div>
+
+    <!-- ========= Maps (placeholder) ========= -->
+    <div class="relative">
+      <button
+        class="top-btn hover:underline"
+        data-open="menu-maps"
+        data-root="true"
+        type="button"
+      >
+        Maps
+      </button>
+      <div id="menu-maps" class="menu-panel w-56">
+        <div class="menu-item opacity-60 cursor-default">No options yet</div>
+      </div>
+    </div>
+
+    <!-- ========= Analyze ========= -->
+    <div class="relative">
+      <button
+        class="top-btn hover:underline"
+        data-open="menu-analyze"
+        data-root="true"
+        type="button"
+      >
+        Analyze
+      </button>
+      <div id="menu-analyze" class="menu-panel w-[22rem]">
+        <button class="menu-item" id="mi-compute">
+          <span>Compute</span><span class="opacity-70 ml-6">Ctrl+K</span>
+        </button>
+        <button class="menu-item" id="mi-report"
+          >Show Report of Last Computation</button
+        >
+        <button class="menu-item" id="mi-compare"
+          >Compare Transformations</button
+        >
+        <div class="divider"></div>
+
+        <!-- Target map -->
+        <div class="relative">
+          <button
+            class="menu-item justify-between"
+            data-open="submenu-target"
+            type="button"
+          >
+            Target Map <span class="ml-4">›</span>
+          </button>
+          <div id="submenu-target" class="menu-panel submenu">
+            <button
+              class="menu-item target-map"
+              data-target="old"
+              id="tg-old"
+              type="button"
+            >
+              <span class="radio" data-radio="map" data-val="old">●</span>
+              <span class="ml-2">Old Map (transform old → new)</span>
+            </button>
+            <button
+              class="menu-item target-map"
+              data-target="new"
+              id="tg-new"
+              type="button"
+            >
+              <span class="radio" data-radio="map" data-val="new">○</span>
+              <span class="ml-2">New Map (transform new → old)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Transformation -->
+        <div class="relative">
+          <button
+            class="menu-item justify-between"
+            data-open="submenu-trans"
+            type="button"
+          >
+            Transformation <span class="ml-4">›</span>
+          </button>
+          <div id="submenu-trans" class="menu-panel submenu w-[25rem]">
+            <button
+              class="menu-item trans-kind"
+              data-kind="helmert4"
+              id="t-helmert4"
+              type="button"
+            >
+              <span class="check" data-check="trans" data-val="helmert4">✓</span
+              >
+              <span class="ml-2">Helmert 4 Parameters</span>
+            </button>
+            <button
+              class="menu-item trans-kind"
+              data-kind="affine5"
+              id="t-affine5"
+              type="button"
+            >
+              <span class="check" data-check="trans" data-val="affine5"></span>
+              <span class="ml-2">Affine 5 Parameters</span>
+            </button>
+            <button
+              class="menu-item trans-kind"
+              data-kind="affine6"
+              id="t-affine6"
+              type="button"
+            >
+              <span class="check" data-check="trans" data-val="affine6"></span>
+              <span class="ml-2">Affine 6 Parameters</span>
+            </button>
+
+            <!-- Robust submenu -->
+            <div class="relative">
+              <button
+                class="menu-item justify-between"
+                data-open="submenu-robust"
+                type="button"
+              >
+                <span class="flex items-center">
+                  <span class="check" data-check="trans" data-val="robust"
+                  ></span>
+                  <span class="ml-2">Robust Helmert Estimator</span>
+                </span>
+                <span class="ml-4">›</span>
+              </button>
+              <div id="submenu-robust" class="menu-panel submenu w-[26rem]">
+                <button
+                  class="menu-item robust-kind"
+                  data-robust="huber"
+                  id="r-huber"
+                  type="button"
+                >
+                  <span class="check" data-check="robust" data-val="huber"
+                    >✓</span
+                  >
+                  <span class="ml-2">Huber Estimator</span>
+                </button>
+                <button
+                  class="menu-item robust-kind"
+                  data-robust="v"
+                  id="r-v"
+                  type="button"
+                >
+                  <span class="check" data-check="robust" data-val="v"></span>
+                  <span class="ml-2">Tukey’s Biweight (v) Estimator</span>
+                </button>
+                <button
+                  class="menu-item robust-kind"
+                  data-robust="hampel"
+                  id="r-hampel"
+                  type="button"
+                >
+                  <span class="check" data-check="robust" data-val="hampel"
+                  ></span>
+                  <span class="ml-2">Hampel Estimator</span>
+                </button>
+                <div class="divider"></div>
+                <button class="menu-item" id="r-huber-params" type="button"
+                  >Set Parameters for Huber Estimator…</button
+                >
+                <button class="menu-item" id="r-v-params" type="button"
+                  >Set Parameters for v Estimator…</button
+                >
+                <button class="menu-item" id="r-hampel-params" type="button"
+                  >Set Parameters for Hampel Estimator…</button
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========= View (placeholder) ========= -->
+    <div class="relative">
+      <button
+        class="top-btn hover:underline"
+        data-open="menu-view"
+        data-root="true"
+        type="button"
+      >
+        View
+      </button>
+      <div id="menu-view" class="menu-panel w-56">
+        <div class="menu-item opacity-60 cursor-default">No options yet</div>
+      </div>
+    </div>
+
+    <!-- ========= Help ========= -->
+    <div class="relative">
+      <button
+        class="top-btn hover:underline"
+        data-open="menu-help"
+        data-root="true"
+        type="button"
+      >
+        ?
+      </button>
+      <div id="menu-help" class="menu-panel w-40 right-0">
+        <button class="menu-item" id="toolbar-info-open" type="button"
+          >Info</button
+        >
+      </div>
+    </div>
+  </div>
+
+  <!-- hidden file inputs -->
+  <input id="oldMapInput" type="file" class="hidden" accept="image/*" />
+  <input id="newMapImageInput" type="file" class="hidden" accept="image/*" />
+  <input id="importOldPointsInput" type="file" class="hidden" accept=".txt" />
+  <input id="importNewPointsInput" type="file" class="hidden" accept=".txt" />
+  <input
+    id="importLinkedPointsInput"
+    type="file"
+    class="hidden"
+    accept=".txt"
+  />
+</nav>
+
+<!-- Info Modal -->
+<div id="toolbar-info-modal" class="modal-wrap">
+  <div class="modal-overlay"></div>
+  <div class="modal-card max-w-xl">
+    <button class="modal-x" id="info-modal-close" type="button">✕</button>
+    <div class="flex items-center gap-3 mb-3">
+      <img src="/images/logo-mark.svg" alt="MapAnalyst icon" class="w-14 h-14" />
+      <span class="text-2xl font-semibold">MapAnalyst 2.0</span>
+    </div>
+    <div class="prose prose-invert max-w-none">
+      {Content ? <Content /> : <p>No info content found.</p>}
+    </div>
+  </div>
+</div>
+
+<!-- Estimator Parameters Modal -->
+<div id="estimator-modal" class="modal-wrap">
+  <div class="modal-overlay"></div>
+  <div class="modal-card w-[38rem] max-w-[92vw]">
+    <button class="modal-x" id="estimator-x" type="button">✕</button>
+    <h3 id="estimator-title" class="text-xl font-semibold"></h3>
+    <form id="estimator-form" class="mt-4 space-y-4"></form>
+    <div class="mt-6 flex gap-3 justify-end">
+      <button
+        class="px-4 py-2 rounded bg-blue-600 hover:bg-blue-700"
+        id="estimator-ok"
+        type="button">OK</button
+      >
+      <button
+        class="px-4 py-2 rounded bg-neutral-700 hover:bg-neutral-600"
+        id="estimator-cancel"
+        type="button">Cancel</button
+      >
+    </div>
+  </div>
+</div>
+
+<!-- Results Modal -->
+<div id="results-modal" class="modal-wrap">
+  <div class="modal-overlay"></div>
+  <div class="modal-card w-[56rem] max-w-[96vw]">
+    <button class="modal-x" id="results-x" type="button">✕</button>
+    <h3 class="text-xl font-semibold mb-4">Computation Report</h3>
+    <div id="results-body" class="space-y-6"></div>
+  </div>
+</div>
+
+<!-- Comparison Modal -->
+<div id="comparison-modal" class="modal-wrap">
+  <div class="modal-overlay"></div>
+  <div class="modal-card w-[44rem] max-w-[96vw]">
+    <button class="modal-x" id="comparison-x" type="button">x</button>
+    <h3 class="text-xl font-semibold mb-4">Comparison of Transformations</h3>
+    <pre
+      id="comparison-body"
+      class="bg-neutral-950 text-white text-sm leading-relaxed p-4 rounded max-h-[70vh] overflow-auto whitespace-pre-wrap"
+    ></pre>
+  </div>
+</div>
+
+<!-- Compute overlay -->
+<div
+  id="compute-overlay"
+  class="fixed inset-0 hidden items-center justify-center z-[9998] bg-black/40"
+>
+  <div class="bg-neutral-900 text-white px-6 py-4 rounded-xl shadow-2xl">
+    Computing… please wait
+  </div>
+</div>
+
+<style>
+  .menu-panel {
+    @apply absolute left-0 mt-2 bg-neutral-900 text-white rounded shadow-xl p-1 hidden;
+    min-width: 12rem;
+    z-index: 2100;
+  }
+  .menu-panel.right-0 {
+    left: auto;
+    right: 0;
+  }
+  .menu-panel.open {
+    display: block;
+  }
+  .submenu {
+    top: 0;
+    left: 100%;
+    margin-left: 0.25rem;
+  }
+
+  .menu-item {
+    @apply flex items-center w-full text-left px-3 py-2 rounded hover:bg-neutral-700;
+  }
+  .top-btn {
+    @apply px-1;
+  }
+  .divider {
+    @apply my-1 border-t border-neutral-700;
+  }
+
+  .check {
+    width: 1rem;
+    display: inline-block;
+    text-align: center;
+  }
+  .radio {
+    width: 1.1rem;
+    display: inline-block;
+    text-align: center;
+  }
+
+  .modal-wrap {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+  }
+  .modal-wrap.active,
+  .modal-wrap.show {
+    display: block;
+  }
+  .modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+  }
+  .modal-card {
+    @apply bg-neutral-900 text-white rounded-xl shadow-2xl p-6;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .modal-x {
+    @apply absolute top-2 right-2 text-gray-400 hover:text-white text-xl;
+  }
+</style>
+
+<script is:inline>
+  const qs = (s, r = document) => r.querySelector(s);
+  const qsa = (s, r = document) => Array.from(r.querySelectorAll(s));
+
+  /** Menus (click to open, click outside to close) **/
+  function closeAllMenus() {
+    qsa(".menu-panel.open").forEach((p) => p.classList.remove("open"));
+  }
+  // prevent closing when clicking inside panels
+  qsa(".menu-panel").forEach((p) => {
+    p.addEventListener("mousedown", (e) => e.stopPropagation());
+    p.addEventListener("click", (e) => e.stopPropagation());
+  });
+  qsa("button[data-open]").forEach((btn) => {
+    const id = btn.getAttribute("data-open");
+    const isRoot = btn.getAttribute("data-root") === "true";
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const panel = qs("#" + id);
+      if (!panel) return;
+      if (isRoot) {
+        const was = panel.classList.contains("open");
+        closeAllMenus();
+        if (!was) panel.classList.add("open");
+      } else {
+        const parent = btn.closest(".menu-panel");
+        if (parent) {
+          qsa(":scope > .submenu.open", parent).forEach((s) => {
+            if (s.id !== id) s.classList.remove("open");
+          });
+        }
+        panel.classList.toggle("open");
+      }
+    });
+  });
+  document.addEventListener("click", closeAllMenus);
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeAllMenus();
+  });
+
+  /** File: Upload Map (MapInteractions listens to these inputs) **/
+  const clickHidden = (id) => {
+    closeAllMenus();
+    qs("#" + id)?.click();
+  };
+  qs("#mi-upload-old")?.addEventListener("click", () =>
+    clickHidden("oldMapInput")
+  );
+  qs("#mi-upload-new")?.addEventListener("click", () =>
+    clickHidden("newMapImageInput")
+  );
+
+  /** Import / Export Points (compatible with both function & event styles) **/
+  const requireTxt = (file) => {
+    if (!file) return false;
+    const ok = /\.txt$/i.test(file.name);
+    if (!ok) alert("Please select a .txt file.");
+    return ok;
+  };
+  const callImport = (kind, file) => {
+    if (typeof window.mapanalystImport === "function") {
+      window.mapanalystImport(kind, file);
+    } else {
+      window.dispatchEvent(
+        new CustomEvent("mapanalyst:import", { detail: { kind, file } })
+      );
+    }
+  };
+  const callExport = (kind) => {
+    if (typeof window.mapanalystExport === "function") {
+      window.mapanalystExport(kind);
+    } else {
+      window.dispatchEvent(
+        new CustomEvent("mapanalyst:export", { detail: { kind } })
+      );
+    }
+  };
+
+  // open file pickers
+  qs("#mi-import-linked")?.addEventListener("click", () =>
+    clickHidden("importLinkedPointsInput")
+  );
+  qs("#mi-import-old")?.addEventListener("click", () =>
+    clickHidden("importOldPointsInput")
+  );
+  qs("#mi-import-new")?.addEventListener("click", () =>
+    clickHidden("importNewPointsInput")
+  );
+
+  // handle file selections
+  qs("#importLinkedPointsInput")?.addEventListener("change", (e) => {
+    const f = e.target.files?.[0];
+    if (!requireTxt(f)) return;
+    callImport("linked", f);
+    closeAllMenus();
+    e.target.value = "";
+  });
+  qs("#importOldPointsInput")?.addEventListener("change", (e) => {
+    const f = e.target.files?.[0];
+    if (!requireTxt(f)) return;
+    callImport("old", f);
+    closeAllMenus();
+    e.target.value = "";
+  });
+  qs("#importNewPointsInput")?.addEventListener("change", (e) => {
+    const f = e.target.files?.[0];
+    if (!requireTxt(f)) return;
+    callImport("new", f);
+    closeAllMenus();
+    e.target.value = "";
+  });
+
+  // export buttons
+  qs("#mi-export-old")?.addEventListener("click", () => {
+    callExport("old");
+    closeAllMenus();
+  });
+  qs("#mi-export-new")?.addEventListener("click", () => {
+    callExport("new");
+    closeAllMenus();
+  });
+  qs("#mi-export-linked")?.addEventListener("click", () => {
+    callExport("linked");
+    closeAllMenus();
+  });
+
+  /** Edit: Undo/Redo + List Linked Points **/
+  qs("#btn-undo")?.addEventListener("click", () =>
+    window.dispatchEvent(new CustomEvent("mapanalyst:undo"))
+  );
+  qs("#btn-redo")?.addEventListener("click", () =>
+    window.dispatchEvent(new CustomEvent("mapanalyst:redo"))
+  );
+  // keyboard
+  document.addEventListener("keydown", (e) => {
+    if (e.ctrlKey && !e.shiftKey && e.key.toLowerCase() === "z") {
+      window.dispatchEvent(new CustomEvent("mapanalyst:undo"));
+      e.preventDefault();
+    }
+    if (e.ctrlKey && !e.shiftKey && e.key.toLowerCase() === "y") {
+      window.dispatchEvent(new CustomEvent("mapanalyst:redo"));
+      e.preventDefault();
+    }
+    if (e.ctrlKey && e.key.toLowerCase() === "k") {
+      doCompute();
+      e.preventDefault();
+    }
+  });
+  // open linked list modal
+  qs("#btn-list-links")?.addEventListener("click", () => {
+    if (typeof window.mapanalystShowLinks === "function") {
+      window.mapanalystShowLinks();
+    } else {
+      window.dispatchEvent(new CustomEvent("mapanalyst:show-links"));
+    }
+    closeAllMenus();
+  });
+
+  /** Help / Info modal **/
+  const infoWrap = qs("#toolbar-info-modal");
+  const showInfo = () => {
+    infoWrap?.classList.add("show");
+    closeAllMenus();
+  };
+  const hideInfo = () => infoWrap?.classList.remove("show");
+  qs("#toolbar-info-open")?.addEventListener("click", showInfo);
+  qs("#info-modal-close")?.addEventListener("click", hideInfo);
+  infoWrap?.addEventListener("mousedown", (e) => {
+    if (e.target.classList.contains("modal-overlay")) hideInfo();
+  });
+
+  /** Analyze: state & UI checks **/
+  const analysisState = {
+    mapTarget: "old",
+    transformation: "helmert4",
+    robustKind: "huber",
+    huber: { k: 1.5 },
+    v: { k: 1.5, e: 0.6 },
+    hampel: { a: 1.0, b: 2.0, c: 4.0 },
+  };
+  function renderChecks() {
+    qsa('.radio[data-radio="map"]').forEach((el) => {
+      el.textContent =
+        el.getAttribute("data-val") === analysisState.mapTarget ? "●" : "○";
+    });
+    qsa('.check[data-check="trans"]').forEach((el) => {
+      el.textContent =
+        el.getAttribute("data-val") === analysisState.transformation ? "✓" : "";
+    });
+    qsa('.check[data-check="robust"]').forEach((el) => {
+      el.textContent =
+        el.getAttribute("data-val") === analysisState.robustKind ? "✓" : "";
+    });
+  }
+  renderChecks();
+
+  qsa(".target-map").forEach((b) =>
+    b.addEventListener("click", () => {
+      analysisState.mapTarget = b.getAttribute("data-target");
+      renderChecks();
+      window.dispatchEvent(
+        new CustomEvent("mapanalyst:target-map", {
+          detail: { target: analysisState.mapTarget },
+        })
+      );
+    })
+  );
+  qsa(".trans-kind").forEach((b) =>
+    b.addEventListener("click", () => {
+      analysisState.transformation = b.getAttribute("data-kind");
+      renderChecks();
+    })
+  );
+  qsa(".robust-kind").forEach((b) =>
+    b.addEventListener("click", () => {
+      analysisState.transformation = "robust";
+      analysisState.robustKind = b.getAttribute("data-robust");
+      renderChecks();
+    })
+  );
+
+  /** Estimator parameter modals **/
+  const estWrap = qs("#estimator-modal");
+  const estForm = qs("#estimator-form");
+  const estTitle = qs("#estimator-title");
+  const showEstimator = (title, bodyHtml, onOk) => {
+    estTitle.textContent = title;
+    estForm.innerHTML = bodyHtml;
+    estWrap.classList.add("active");
+    const ok = qs("#estimator-ok"),
+      cancel = qs("#estimator-cancel"),
+      x = qs("#estimator-x");
+    const close = () => estWrap.classList.remove("active");
+    ok.onclick = () => {
+      onOk?.();
+      close();
+    };
+    cancel.onclick = close;
+    x.onclick = close;
+  };
+  estWrap?.addEventListener("mousedown", (e) => {
+    if (e.target.classList.contains("modal-overlay"))
+      estWrap.classList.remove("active");
+  });
+
+  qs("#r-huber-params")?.addEventListener("click", () => {
+    closeAllMenus();
+    showEstimator(
+      "Parameters for Huber Estimator",
+      `
+        <label class="block">
+          <span class="font-semibold">Huber Estimator k:</span>
+          <input id="huber-k" type="number" step="0.1" min="0" max="4" value="\${analysisState.huber.k}"
+                 class="mt-1 w-24 px-2 py-1 rounded bg-neutral-800 border border-neutral-700"/>
+        </label>
+        <p class="text-sm mt-2">k has to be between 0.0 and 4.0</p>
+        <p class="text-sm">If 'k' is small then uncertain points have a smaller influence on the transformation, and vice versa.</p>
+        <p class="text-sm">Default value for 'k' is 1.5</p>
+      `,
+      () => {
+        const v = parseFloat(qs("#huber-k").value);
+        if (!Number.isFinite(v) || v < 0 || v > 4)
+          return alert("k must be in [0,4].");
+        analysisState.huber.k = v;
+      }
+    );
+  });
+
+  qs("#r-v-params")?.addEventListener("click", () => {
+    closeAllMenus();
+    showEstimator(
+      "Parameters for V Estimator",
+      `
+        <label class="block">
+          <span class="font-semibold">V Estimator k:</span>
+          <input id="v-k" type="number" step="0.1" min="0" max="4" value="\${analysisState.v.k}"
+                 class="mt-1 w-24 px-2 py-1 rounded bg-neutral-800 border border-neutral-700"/>
+        </label>
+        <p class="text-sm mt-2">k has to be between 0.0 and 4.0</p>
+        <p class="text-sm">If 'k' is small then uncertain points have a smaller influence on the transformation, and vice versa.</p>
+        <p class="text-sm">Default value for 'k' is 1.5</p>
+
+        <label class="block mt-4">
+          <span class="font-semibold">V Estimator e:</span>
+          <input id="v-e" type="number" step="0.05" min="0" max="1" value="\${analysisState.v.e}"
+                 class="mt-1 w-24 px-2 py-1 rounded bg-neutral-800 border border-neutral-700"/>
+        </label>
+        <p class="text-sm mt-2">e has to be between 0.0 and 1.0</p>
+        <p class="text-sm">The parameter 'e' is the degree of contamination. A small value means a slight contamination, and vice versa.</p>
+        <p class="text-sm">Default value recommendations:</p>
+        <p class="text-sm">slight contamination: 0.0 ... 0.3</p>
+        <p class="text-sm">average contamination: 0.3 ... 0.7</p>
+        <p class="text-sm">high contamination: 0.7 ... 1.0</p>
+      `,
+      () => {
+        const vk = parseFloat(qs("#v-k").value);
+        const ve = parseFloat(qs("#v-e").value);
+        if (!Number.isFinite(vk) || vk < 0 || vk > 4)
+          return alert("k must be in [0,4].");
+        if (!Number.isFinite(ve) || ve < 0 || ve > 1)
+          return alert("e must be in [0,1].");
+        analysisState.v.k = vk;
+        analysisState.v.e = ve;
+      }
+    );
+  });
+
+  qs("#r-hampel-params")?.addEventListener("click", () => {
+    closeAllMenus();
+    showEstimator(
+      "Parameters for Hampel Estimator",
+      `
+        <label class="block">
+          <span class="font-semibold">Hampel Estimator a:</span>
+          <input id="hampel-a" type="number" step="0.1" min="0" max="4" value="\${analysisState.hampel.a}"
+                 class="mt-1 w-24 px-2 py-1 rounded bg-neutral-800 border border-neutral-700"/>
+        </label>
+        <p class="text-sm mt-2">a has to be between 0.0 and 4.0</p>
+
+        <label class="block mt-4">
+          <span class="font-semibold">Hampel Estimator b:</span>
+          <input id="hampel-b" type="number" step="0.1" min="1" max="6" value="\${analysisState.hampel.b}"
+                 class="mt-1 w-24 px-2 py-1 rounded bg-neutral-800 border border-neutral-700"/>
+        </label>
+        <p class="text-sm mt-2">b has to be between 1.0 and 6.0</p>
+
+        <label class="block mt-4">
+          <span class="font-semibold">Hampel Estimator c:</span>
+          <input id="hampel-c" type="number" step="0.1" min="2" max="12" value="\${analysisState.hampel.c}"
+                 class="mt-1 w-24 px-2 py-1 rounded bg-neutral-800 border border-neutral-700"/>
+        </label>
+        <p class="text-sm mt-2">c has to be between 2.0 and 12.0</p>
+      `,
+      () => {
+        const a = parseFloat(qs("#hampel-a").value);
+        const b = parseFloat(qs("#hampel-b").value);
+        const c = parseFloat(qs("#hampel-c").value);
+        if (![a, b, c].every(Number.isFinite))
+          return alert("Please enter valid numbers.");
+        if (a < 0 || a > 4) return alert("a must be in [0,4].");
+        if (b < 1 || b > 6) return alert("b must be in [1,6].");
+        if (c < 2 || c > 12) return alert("c must be in [2,12].");
+        analysisState.hampel = { a, b, c };
+      }
+    );
+  });
+
+  /** Compute + Report **/
+  const overlay = qs("#compute-overlay");
+  const resultsModal = qs("#results-modal");
+  const resultsBody = qs("#results-body");
+  const comparisonModal = qs("#comparison-modal");
+  const comparisonBody = qs("#comparison-body");
+
+  function getPairsFromWindow() {
+    const links = window.getLinks ? window.getLinks() : [];
+    return links
+      .map((ln) => {
+        const o = ln.old?.getLatLng ? ln.old.getLatLng() : null;
+        const n = ln.new?.getLatLng ? ln.new.getLatLng() : null;
+        return {
+          name: ln.name || "",
+          old: o ? { x: Number(o.lng), y: Number(o.lat) } : null,
+          new: n ? { x: Number(n.lng), y: Number(n.lat) } : null,
+        };
+      })
+      .filter((p) => p.old && p.new);
+  }
+
+  async function doCompute() {
+    closeAllMenus();
+    const pairs = getPairsFromWindow();
+    if (!pairs.length) {
+      alert("Please link at least one pair of points.");
+      return;
+    }
+
+    const settings = window.MapAnalyst?.getSettings?.() || null;
+    const payload = {
+      mode: analysisState.transformation, // 'helmert4' | 'affine5' | 'affine6' | 'robust'
+      robustKind: analysisState.robustKind, // when mode === 'robust'
+      params: {
+        huber: analysisState.huber,
+        v: analysisState.v,
+        hampel: analysisState.hampel,
+      },
+      target: analysisState.mapTarget, // 'old' | 'new'
+      pairs,
+      settings,
+    };
+
+    try {
+      overlay?.classList.remove("hidden");
+      const res = await fetch("http://localhost:8000/api/compute", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error((await res.text()) || "Compute failed");
+      const result = await res.json();
+
+      window.MapAnalyst = window.MapAnalyst || {};
+      window.MapAnalyst.lastResult = result;
+      window.dispatchEvent(
+        new CustomEvent("mapanalyst:result", { detail: result })
+      );
+
+      openReport(result);
+    } catch (err) {
+      console.error(err);
+      alert("Computation error: " + err.message);
+    } finally {
+      overlay?.classList.add("hidden");
+    }
+  }
+  window.MapAnalyst = window.MapAnalyst || {};
+  window.MapAnalyst.doCompute = doCompute;
+  qs("#mi-compute")?.addEventListener("click", () => doCompute());
+  document.getElementById("btn-compute")?.addEventListener("click", () => doCompute());
+
+  function openReport(result) {
+    if (!result) result = window.MapAnalyst?.lastResult;
+    if (!result) return alert("No computation yet.");
+
+    const paramsRows = (result.parameters || [])
+      .map(
+        (p) =>
+          `<tr><td class="px-2 py-1">${p.name}</td><td class="px-2 py-1 text-right">${Number(p.value).toFixed(6)}</td></tr>`
+      )
+      .join("");
+
+    const residRows = (result.residuals || [])
+      .map(
+        (r) => `
+      <tr>
+        <td class="px-2 py-1">${r.name || ""}</td>
+        <td class="px-2 py-1">X: ${r.old.x.toFixed(5)}, Y: ${r.old.y.toFixed(5)}</td>
+        <td class="px-2 py-1">X: ${r.new.x.toFixed(5)}, Y: ${r.new.y.toFixed(5)}</td>
+        <td class="px-2 py-1 text-right">${r.vx.toFixed(6)}</td>
+        <td class="px-2 py-1 text-right">${r.vy.toFixed(6)}</td>
+        <td class="px-2 py-1 text-right">${r.vnorm.toFixed(6)}</td>
+      </tr>
+    `
+      )
+      .join("");
+
+    resultsBody.innerHTML = `
+      <div class="grid md:grid-cols-2 gap-6">
+        <div>
+          <h4 class="font-semibold mb-2">Parameters</h4>
+          <table class="min-w-full text-sm">
+            <thead><tr><th class="px-2 py-1">Name</th><th class="px-2 py-1 text-right">Value</th></tr></thead>
+            <tbody>${paramsRows}</tbody>
+          </table>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-2">Summary</h4>
+          <div class="text-sm space-y-1">
+            <div><span class="opacity-75">Mode:</span> <code>${result.mode}</code></div>
+            <div><span class="opacity-75">Target:</span> ${result.target}</div>
+            <div><span class="opacity-75">Pairs:</span> ${result.n_pairs}</div>
+            <div><span class="opacity-75">RMSE:</span> ${Number(result.rmse).toFixed(6)}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-6">
+        <h4 class="font-semibold mb-2">Residuals</h4>
+        <div class="max-h-[45vh] overflow-auto border border-neutral-700 rounded">
+          <table class="min-w-full text-sm">
+            <thead class="sticky top-0 bg-neutral-800">
+              <tr>
+                <th class="px-2 py-1">Name</th>
+                <th class="px-2 py-1">Old Map</th>
+                <th class="px-2 py-1">New Map</th>
+                <th class="px-2 py-1 text-right">vX</th>
+                <th class="px-2 py-1 text-right">vY</th>
+                <th class="px-2 py-1 text-right">|v|</th>
+              </tr>
+            </thead>
+            <tbody>${residRows}</tbody>
+          </table>
+        </div>
+      </div>
+    `;
+    resultsModal.classList.add("active");
+    closeAllMenus();
+  }
+
+  const DEG_PER_RAD = 180 / Math.PI;
+
+  function paramsToMap(list) {
+    const out = Object.create(null);
+    if (!Array.isArray(list)) return out;
+    list.forEach((item) => {
+      if (!item || typeof item.name !== "string") return;
+      const val = Number(item.value);
+      if (Number.isFinite(val)) out[item.name] = val;
+    });
+    return out;
+  }
+
+  function formatScaleRatio(factor) {
+    const f = Number(factor);
+    if (!Number.isFinite(f) || f === 0) return "-";
+    const ratio = Math.abs(f) < 1 ? 1 / Math.abs(f) : Math.abs(f);
+    const formatted =
+      ratio >= 1000
+        ? ratio.toLocaleString(undefined, { maximumFractionDigits: 0 })
+        : ratio.toLocaleString(undefined, { maximumFractionDigits: 3 });
+    return `1:${formatted}`;
+  }
+
+  function formatRotation(degVal) {
+    const value = Number(degVal);
+    if (!Number.isFinite(value)) return "-";
+    const sign = value < 0 ? "[ccw]" : "[cw]";
+    const absVal =
+      Math.abs(value) >= 100
+        ? Math.abs(value).toFixed(0)
+        : Math.abs(value).toFixed(1);
+    return `${absVal} deg ${sign}`;
+  }
+
+  function formatDeviation(value, unit) {
+    const v = Number(value);
+    if (!Number.isFinite(v)) return "-";
+    const abs = Math.abs(v);
+    let decimals = 3;
+    if (abs >= 1000) decimals = 0;
+    else if (abs >= 100) decimals = 1;
+    else if (abs >= 10) decimals = 2;
+    const label = unit ? ` ${unit}` : "";
+    return `+/-${abs.toFixed(decimals)}${label}`;
+  }
+
+  function computeResidualStats(residuals, target) {
+    if (!Array.isArray(residuals) || residuals.length === 0) {
+      return { rmse: NaN, mean: NaN, unit: target === "old" ? "px" : "units" };
+    }
+    const coords = residuals
+      .map((r) => (target === "new" ? r?.new : r?.old))
+      .filter(
+        (pt) =>
+          pt &&
+          Number.isFinite(pt.x) &&
+          Number.isFinite(pt.y)
+      );
+    const treatAsGeographic =
+      target === "new" &&
+      coords.length === residuals.length &&
+      coords.every(
+        (pt) => Math.abs(pt.x) <= 180 && Math.abs(pt.y) <= 90
+      );
+    const avgLat = treatAsGeographic
+      ? coords.reduce((acc, pt) => acc + pt.y, 0) / coords.length
+      : 0;
+    const metersPerDeg = 111320;
+    let sumSquares = 0;
+    let sumAbs = 0;
+    residuals.forEach((res) => {
+      let dx = Number(res?.vx) || 0;
+      let dy = Number(res?.vy) || 0;
+      if (treatAsGeographic) {
+        const latRaw = Number(
+          target === "new" ? res?.new?.y : res?.old?.y
+        );
+        const latValue = Number.isFinite(latRaw) ? latRaw : avgLat;
+        const latRad = (latValue * Math.PI) / 180;
+        const metersPerLon = metersPerDeg * Math.max(Math.cos(latRad), 1e-6);
+        dx *= metersPerLon;
+        dy *= metersPerDeg;
+      }
+      const mag = Math.hypot(dx, dy);
+      sumSquares += mag * mag;
+      sumAbs += mag;
+    });
+    const count = residuals.length || 1;
+    return {
+      rmse: Math.sqrt(sumSquares / count),
+      mean: sumAbs / count,
+      unit: treatAsGeographic ? "m" : target === "old" ? "px" : "units",
+    };
+  }
+
+  function buildComparisonSection(entry, target) {
+    const lines = [entry.title];
+    if (entry.error) {
+      lines.push(`  ${entry.error}`);
+      return lines.join("\n");
+    }
+    const params = paramsToMap(entry.data?.parameters);
+    const stats = computeResidualStats(entry.data?.residuals, target);
+    if (entry.mode === "helmert4") {
+      lines.push(`  Scale: ${formatScaleRatio(params.scale)}`);
+      lines.push(`  Rotation: ${formatRotation(params.rotation_deg)}`);
+    } else if (entry.mode === "affine5") {
+      const a = params.a ?? NaN;
+      const b = params.b ?? NaN;
+      const d = params.d ?? NaN;
+      const scaleH = Math.hypot(a, b);
+      const scaleV = Math.hypot(b, d);
+      const rot = Math.atan2(b, a) * DEG_PER_RAD;
+      lines.push(`  Scale Hor.: ${formatScaleRatio(scaleH)}`);
+      lines.push(`  Scale Vert.: ${formatScaleRatio(scaleV)}`);
+      lines.push(`  Rotation: ${formatRotation(rot)}`);
+    } else if (entry.mode === "affine6") {
+      const a = params.a ?? NaN;
+      const b = params.b ?? NaN;
+      const c = params.c ?? NaN;
+      const d = params.d ?? NaN;
+      const scaleH = Math.hypot(a, c);
+      const scaleV = Math.hypot(b, d);
+      const rotX = Math.atan2(c, a) * DEG_PER_RAD;
+      const rotY = Math.atan2(d, b) * DEG_PER_RAD;
+      lines.push(`  Scale Hor.: ${formatScaleRatio(scaleH)}`);
+      lines.push(`  Scale Vert.: ${formatScaleRatio(scaleV)}`);
+      lines.push(`  Rotation X: ${formatRotation(rotX)}`);
+      lines.push(`  Rotation Y: ${formatRotation(rotY)}`);
+    }
+    lines.push(
+      `  Std. Deviation: ${formatDeviation(stats.rmse, stats.unit)}`
+    );
+    lines.push(
+      `  Mean Pos. Err.: ${formatDeviation(stats.mean, stats.unit)}`
+    );
+    return lines.join("\n");
+  }
+
+  function buildComparisonSummary(results, pairCount, target) {
+    const header = `Computation with ${pairCount} linked point${
+      pairCount === 1 ? "" : "s"
+    }.`;
+    const sections = results
+      .map((entry) => buildComparisonSection(entry, target))
+      .join("\n\n");
+    return `${header}\n\n${sections}`.trim();
+  }
+
+  async function doCompare() {
+    closeAllMenus();
+    const pairs = getPairsFromWindow();
+    if (!pairs.length) {
+      alert("Please link at least one pair of points.");
+      return;
+    }
+    const settings = window.MapAnalyst?.getSettings?.() || null;
+    const basePayload = {
+      robustKind: analysisState.robustKind,
+      params: {
+        huber: analysisState.huber,
+        v: analysisState.v,
+        hampel: analysisState.hampel,
+      },
+      target: analysisState.mapTarget,
+      pairs,
+      settings,
+    };
+    const modes = [
+      { mode: "helmert4", title: "Helmert (4 Parameters)", minPairs: 2 },
+      { mode: "affine5", title: "Affine (5 Parameters)", minPairs: 3 },
+      { mode: "affine6", title: "Affine (6 Parameters)", minPairs: 3 },
+    ];
+    const results = [];
+    try {
+      overlay?.classList.remove("hidden");
+      for (const item of modes) {
+        if (pairs.length < item.minPairs) {
+          results.push({
+            mode: item.mode,
+            title: item.title,
+            error: `Requires at least ${item.minPairs} linked points.`,
+          });
+          continue;
+        }
+        const payload = { ...basePayload, mode: item.mode };
+        try {
+          const res = await fetch("http://localhost:8000/api/compute", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+          if (!res.ok) {
+            let message = "";
+            try {
+              const errJson = await res.json();
+              message =
+                errJson?.detail ||
+                errJson?.meta?.message ||
+                errJson?.message ||
+                "";
+            } catch {
+              message = await res.text();
+            }
+            results.push({
+              ...item,
+              error: (message || `Request failed (${res.status})`).trim(),
+            });
+            continue;
+          }
+          const data = await res.json();
+          results.push({ ...item, data });
+        } catch (err) {
+          results.push({
+            ...item,
+            error: (err && err.message) || "Network error",
+          });
+        }
+      }
+    } finally {
+      overlay?.classList.add("hidden");
+    }
+    const summary = buildComparisonSummary(
+      results,
+      pairs.length,
+      basePayload.target
+    );
+    if (comparisonBody) comparisonBody.textContent = summary;
+    if (comparisonModal instanceof HTMLElement) {
+      comparisonModal.classList.add("active");
+    }
+  }
+
+  window.MapAnalyst = window.MapAnalyst || {};
+  window.MapAnalyst.compareTransformations = doCompare;
+  qs("#mi-compare")?.addEventListener("click", () => doCompare());
+  qs("#mi-report")?.addEventListener("click", () => openReport());
+  qs("#results-x")?.addEventListener("click", () =>
+    qs("#results-modal")?.classList.remove("active")
+  );
+  qs("#results-modal")?.addEventListener("mousedown", (e) => {
+    if (e.target === qs("#results-modal"))
+      qs("#results-modal")?.classList.remove("active");
+  });
+  qs("#comparison-x")?.addEventListener("click", () =>
+    comparisonModal?.classList.remove("active")
+  );
+  comparisonModal?.addEventListener?.("mousedown", (e) => {
+    if (e.target === comparisonModal) comparisonModal?.classList.remove("active");
+  });
+</script>

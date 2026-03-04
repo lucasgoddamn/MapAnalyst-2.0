@@ -1,0 +1,363 @@
+---
+import DocsLayout from "@/layouts/DocsLayout.astro";
+import DocsImage from "@/components/DocsImage.astro";
+
+const nav = [
+  {
+    title: "Basics",
+    items: [
+      { text: "Overview", href: "#overview" },
+      { text: "Interface map", href: "#interface" },
+      { text: "Workflow", href: "#workflow" },
+    ],
+  },
+  {
+    title: "Steps",
+    items: [
+      { text: "1. Load old map", href: "#step-old-map" },
+      { text: "2. Set reference map", href: "#step-new-map" },
+      { text: "3. Prepare view", href: "#step-prepare" },
+      { text: "4. Add control points", href: "#step-points" },
+      { text: "5. Link and name", href: "#step-link" },
+      { text: "6. Suggested links", href: "#step-suggest" },
+      { text: "7. Clean up", href: "#step-cleanup" },
+      { text: "8. Choose model", href: "#step-transform" },
+      { text: "9. Compute", href: "#step-compute" },
+      { text: "10. Visualize", href: "#step-visuals" },
+      { text: "11. Compare", href: "#step-compare" },
+      { text: "12. Export", href: "#step-export" },
+    ],
+  },
+  {
+    title: "Help",
+    items: [{ text: "Tips", href: "#tips" }],
+  },
+];
+
+const footerLinks = [
+  { text: "Overview", href: "/docs" },
+  { text: "Manual", href: "/docs/manual" },
+];
+---
+
+<DocsLayout
+  title="Tutorial"
+  description="Step by step tutorial for MapAnalyst 2.0"
+  sidebarTitle="Tutorial"
+  nav={nav}
+  footerLinks={footerLinks}
+>
+  <div class="content">
+    <h1 id="overview">Tutorial for MapAnalyst 2.0</h1>
+    <p>
+      This tutorial explains the full workflow for comparing a historical map
+      with a modern reference map. You will upload maps, place and link control
+      points, compute transformations, and inspect distortion visualizations.
+    </p>
+
+    <h2 id="interface" class="mt-10">Interface map</h2>
+    <p>
+      The interface has three layers: the top menu bar, the map tools toolbar,
+      and the analysis panels below. The left map is the historical image, the
+      right map is the modern reference.
+    </p>
+    <ul>
+      <li>Top menu bar in red: file, edit, analyze, and help actions.</li>
+      <li>
+        Map tools in yellow: create and edit control points, measure, and draw.
+      </li>
+      <li>
+        Settings panel in green: distortion grid, displacements, isolines.
+      </li>
+    </ul>
+    <DocsImage
+      name="tutorial_annotated_layout.png"
+      hint="tutorial_annotated_layout.png"
+      caption="Annotated layout with callouts. "
+      height="11rem"
+    />
+
+    <h2 id="workflow" class="mt-10">Workflow at a glance</h2>
+    <ol>
+      <li>Upload the historical map.</li>
+      <li>Choose a reference map (OSM or uploaded image).</li>
+      <li>
+        Place control points on both maps or let points get suggested and accept
+        them.
+      </li>
+      <li>Link matching points and name them.</li>
+      <li>Compute the transformation.</li>
+      <li>Inspect residuals and visualizations.</li>
+      <li>Export or reuse the control points.</li>
+    </ol>
+
+    <h2 id="step-old-map" class="mt-10">1. Load the old map</h2>
+    <p>
+      Use the menu bar to upload the historical map image (PNG or JPG). The old
+      map uses pixel coordinates, so the map is displayed in an image coordinate
+      system.
+    </p>
+    <ul>
+      <li>Menu path: File &gt; Upload Old Map.</li>
+      <li>The map will fit to the image bounds automatically.</li>
+      <li>Uploading a new image clears old points and links.</li>
+    </ul>
+    <DocsImage
+      name="tutorial-map-upload.jpg"
+      hint="tutorial-map-upload.jpg"
+      caption="Old map upload dialog and result."
+      height="10rem"
+    />
+
+    <h2 id="step-new-map" class="mt-10">2. Set the reference map</h2>
+    <p>
+      By default, the right map is OpenStreetMap. You can keep it as a live map,
+      or upload a modern image instead.
+    </p>
+    <ul>
+      <li>Default: OSM base map with latitude and longitude.</li>
+      <li>Optional: File &gt; Upload New Map to use an image.</li>
+      <li>When using OSM, zoom and pan to the correct region.</li>
+    </ul>
+    <blockquote>
+      If you upload a new map image, the new map uses pixel coordinates like the
+      old map.
+    </blockquote>
+    <DocsImage
+      name="tutorial-map-reference.jpg"
+      hint="tutorial-map-reference.jpg"
+      caption="OSM view and optional upload."
+      height="10rem"
+    />
+
+    <h2 id="step-prepare" class="mt-10">3. Prepare the view</h2>
+    <p>
+      Align the view so that you can see matching locations on both maps. The
+      coordinate readouts at the top help you verify pointer positions and
+      measurements.
+    </p>
+    <ul>
+      <li>Use mouse wheel and drag to zoom and pan.</li>
+      <li>Click Show All to reset the map extents.</li>
+      <li>The Measure tool reports distance and angle.</li>
+    </ul>
+    <DocsImage
+      name="tutorial-align-map.png"
+      hint="tutorial-align-map.png"
+      caption="Coordinate readouts and measure output."
+      height="10rem"
+    />
+
+    <h2 id="step-points" class="mt-10">4. Add and link control points</h2>
+    <p>
+      Control points are the backbone of the analysis. Use the New Point tool to
+      place markers and the "Link" button to link them.
+    </p>
+    <ul>
+      <li>Choose New Point (red) in the map tools toolbar.</li>
+      <li>
+        Click a location on the old map, then the matching place on the new map
+        (blue).
+      </li>
+      <li>Click the link button after two points are selected (yellow).</li>
+      <li>Repeat for every clearly identifiable point.</li>
+    </ul>
+    <blockquote>
+      More points usually improve stability, but focus on clear landmarks.
+    </blockquote>
+    <DocsImage
+      name="tutorial-link-points.png"
+      hint="tutorial-link-points.png"
+      caption="Placing points on both maps and linking them."
+      height="10rem"
+    />
+
+    <h2 id="step-link" class="mt-10">
+      5. Import/export links or points and name points
+    </h2>
+    <p>
+      You can rename the links by simply opening the link list and clicking
+      "Rename". You can "save" your work by exporting and importing your linked
+      points.
+    </p>
+    <ul>
+      <li>Click File &gt; Import &gt; Linked Points.</li>
+      <li>Or click File &gt; Export &gt; Linked Points.</li>
+    </ul>
+    <DocsImage
+      name="tutorial-points-list.jpg"
+      hint="tutorial-points-list.jpg"
+      caption="Selected points panel with Link and Rename."
+      height="10rem"
+    />
+    <DocsImage
+      name="tutorial-import-points.jpg"
+      hint="tutorial-import-points.jpg"
+      caption="Import and export in the top menu bar"
+      height="10rem"
+    />
+
+    <h2 id="step-suggest" class="mt-10">6. Suggested links</h2>
+    <p>
+      MapAnalyst 2.0 can suggest linked control points using computer vision.
+      Use suggestions to speed up the workflow, then review them before
+      accepting.
+    </p>
+    <ul>
+      <li>
+        It is recommended to set a few points and to draw a polygon around the
+        areas in both maps before suggesting links (for a better performance).
+      </li>
+      <li>Click Suggest Links in the map tools toolbar.</li>
+      <li>Set minimum distance, max count, and color, then run.</li>
+      <li>Accept or dismiss suggestions in the list or on the map.</li>
+    </ul>
+    <blockquote>
+      Suggestions require the backend services to run. If you see an error,
+      verify that the backend and optional CV dependencies are installed.
+    </blockquote>
+    <DocsImage
+      name="tutorial-polygon-rec.jpg"
+      hint="tutorial-polygon-rec.jpg"
+      caption="Drawing a polygon after setting a few points for a better performance."
+      height="10rem"
+    />
+    <DocsImage
+      name="tutorial-rec.jpg"
+      hint="tutorial-rec.jpg"
+      caption="Suggestion config dialog."
+      height="10rem"
+    />
+    <DocsImage
+      name="tutorial-rec-window.jpg"
+      hint="tutorial-rec-window.jpg"
+      caption="Suggestion window."
+      height="10rem"
+    />
+    <DocsImage
+      name="tutorial-rec-map.jpg"
+      hint="tutorial-rec-map.jpg"
+      caption="Suggestion interactions directly on the map."
+      height="10rem"
+    />
+
+    <h2 id="step-cleanup" class="mt-10">7. Clean up and adjust</h2>
+    <p>
+      Refine the control points before computation. Use selection tools to move,
+      delete, or remeasure points.
+    </p>
+    <ul>
+      <li>Select Rect to select multiple points.</li>
+      <li>Move Point to drag selected points.</li>
+      <li>Delete to remove points or links.</li>
+      <li>Undo and Redo are available in the Edit menu.</li>
+    </ul>
+    <DocsImage
+      name="tutorial-adjust-points.png"
+      hint="tutorial-adjust-points.png"
+      caption="Selection rectangle, delete and moved points."
+      height="10rem"
+    />
+
+    <h2 id="step-transform" class="mt-10">8. Choose the model</h2>
+    <p>
+      Open the Analyze menu to choose which map to transform and which
+      mathematical model to use.
+    </p>
+    <ul>
+      <li>Target Map sets the map that will be transformed.</li>
+      <li>Choose Helmert (4), Affine (5), Affine (6), or Robust Helmert.</li>
+      <li>Robust estimators have additional parameter dialogs.</li>
+    </ul>
+    <DocsImage
+      name="tutorial-transform-menu.jpg"
+      hint="tutorial-transform-menu.jpg"
+      caption="Analyze menu with transformation selection."
+      height="10rem"
+    />
+
+    <h2 id="step-compute" class="mt-10">9. Compute results</h2>
+    <p>
+      Press Compute to run the analysis. The report lists model parameters and
+      residual errors for each link.
+    </p>
+    <ul>
+      <li>Compute is available in the Analyze menu and map tools toolbar.</li>
+      <li>The report shows parameters, RMSE, and residuals.</li>
+      <li>Large residuals can indicate outliers.</li>
+    </ul>
+    <DocsImage
+      name="tutorial-report.jpg"
+      hint="tutorial-report.jpg"
+      caption="Computation report modal."
+      height="10rem"
+    />
+
+    <h2 id="step-visuals" class="mt-10">10. Visualize distortions</h2>
+    <p>
+      Use the settings panel to enable the three primary visualizations:
+      distortion grid, displacements, and isolines.
+    </p>
+    <ul>
+      <li>Distortion grid reveals local warping across the map.</li>
+      <li>Displacements show residual vectors or circles at points.</li>
+      <li>Isolines map local scale and rotation changes.</li>
+    </ul>
+    <blockquote>
+      Distortion grids and isolines require at least three linked points.
+    </blockquote>
+    <blockquote>
+      It was very important to note that the settings of the visualizations
+      matter. Try adjusting the settings like "Mesh Size" or "Interval" for
+      better results.
+    </blockquote>
+    <DocsImage
+      name="tutorial-dist-grid.jpg"
+      hint="tutorial-dist-grid.jpg"
+      caption="Distortion grid on the map."
+      height="12rem"
+    />
+
+    <h2 id="step-compare" class="mt-10">11. Compare models</h2>
+    <p>
+      The comparison tool runs several transformations and summarizes their
+      results. Use it to justify the model you choose.
+    </p>
+    <ul>
+      <li>Open Analyze &gt; Compare Transformations.</li>
+      <li>Review the summary for scale, rotation, and deviations.</li>
+    </ul>
+    <DocsImage
+      name="tutorial-comparison.jpg"
+      hint="tutorial-comparison.jpg"
+      caption="Comparison modal output."
+      height="10rem"
+    />
+
+    <h2 id="step-export" class="mt-10">12. Export and reuse points</h2>
+    <p>
+      Use import and export to reuse control points or archive your work. The
+      files are plain text and easy to inspect.
+    </p>
+    <ul>
+      <li>Export: old points, new points, or linked points.</li>
+      <li>Import: same formats to restore a session.</li>
+      <li>Comments starting with # are ignored.</li>
+    </ul>
+    <DocsImage
+      name="tutorial-export.jpg"
+      hint="tutorial-export.jpg"
+      caption="Sample text file."
+      height="6rem"
+    />
+
+    <h2 id="tips" class="mt-10">Tips and troubleshooting</h2>
+    <ul>
+      <li>Use at least 2 links for Helmert and 3 for affine models.</li>
+      <li>If the grid or isolines do not appear, recompute first.</li>
+      <li>For OSM suggestions, zoom in so the area is not too large.</li>
+      <li>When using custom polygons, finish with a double click.</li>
+      <li>Link names help track landmarks in the residual report.</li>
+    </ul>
+  </div>
+</DocsLayout>

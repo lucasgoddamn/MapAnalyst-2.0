@@ -1,0 +1,16 @@
+# Editor configuration
+.vscode/
+
+# Frontend build/runtime artifacts
+Code/node_modules/
+Code/dist/
+Code/.astro/
+
+# Python virtual environments
+Code/backend/venv/
+Code/backend/.venv/
+
+# Python bytecode/cache
+**/__pycache__/
+*.pyc
+

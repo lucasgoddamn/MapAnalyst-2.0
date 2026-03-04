@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="markTitle markDesc">
+  <title id="markTitle">MapAnalyst icon</title>
+  <desc id="markDesc">A folded map with a location pin.</desc>
+  <defs>
+    <linearGradient id="markBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#12344d" />
+      <stop offset="100%" stop-color="#1f5d66" />
+    </linearGradient>
+    <linearGradient id="markPin" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34d399" />
+      <stop offset="100%" stop-color="#14b8a6" />
+    </linearGradient>
+  </defs>
+
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="url(#markBg)" />
+  <path d="M12 45L19 17L28 21L37 15L46 19L42 48L33 44L24 50Z" fill="#edf6fb" stroke="#9db8c7" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M19 17L24 50" fill="none" stroke="#bfd0db" stroke-width="1.8"/>
+  <path d="M28 21L33 44" fill="none" stroke="#bfd0db" stroke-width="1.8"/>
+  <path d="M37 15L42 48" fill="none" stroke="#bfd0db" stroke-width="1.8"/>
+  <path d="M18 27H41" fill="none" stroke="#d9e7ef" stroke-width="1.6"/>
+  <path d="M16 37L24 35L33 38L41 35" fill="none" stroke="#d9e7ef" stroke-width="1.6"/>
+  <path d="M41 16C35.5 16 31 20.3 31 25.6C31 32.4 41 42.8 41 42.8C41 42.8 51 32.4 51 25.6C51 20.3 46.5 16 41 16Z" fill="url(#markPin)" stroke="#0f3d3e" stroke-width="2"/>
+  <circle cx="41" cy="26" r="3.4" fill="#ecfeff" />
+</svg>

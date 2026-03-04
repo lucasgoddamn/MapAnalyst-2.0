@@ -1,0 +1,37 @@
+{
+  "site": {
+    "title": "MapAnalyst 2.0",
+    "base_url": "https://mapanalysttwo.app",
+    "base_path": "/",
+    "trailing_slash": false,
+    "favicon": "/images/favicon.png",
+    "logo": "/images/logo.svg",
+    "logo_width": "200",
+    "logo_height": "38",
+    "logo_text": "Astroplate"
+  },
+
+  "settings": {
+    "pagination": 4,
+    "summary_length": 200
+  },
+
+  "nav_button": {
+    "enable": true,
+    "label": "Start analyzing",
+    "link": "/mapanalyst"
+  },
+
+  "params": {
+    "contact_form_action": "",
+    "tag_manager_id": "",
+    "footer_content": "This webapplication is part of a master thesis and does not receive any support anymore.",
+    "copyright": "Designed and Developed By Lucas Zetzsche"
+  },
+
+  "metadata": {
+    "meta_author": "Lucas Zetzsche",
+    "meta_image": "/images/og-image.png",
+    "meta_description": "astro boilerplate"
+  }
+}

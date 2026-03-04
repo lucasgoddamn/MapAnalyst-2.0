@@ -1,0 +1,60 @@
+---
+const {
+  name = "",
+  alt = "",
+  caption = "",
+  hint = "",
+  height = "10rem",
+} = Astro.props;
+
+const rawName = String(name || "").trim();
+const label = hint || rawName;
+
+const normalizeSrc = (value) => {
+  if (!value) return "";
+  const cleaned = value.trim().replace(/\\/g, "/");
+  if (/^https?:\/\//i.test(cleaned)) return cleaned;
+  if (cleaned.startsWith("/")) return cleaned;
+  if (cleaned.startsWith("images/")) return `/${cleaned}`;
+  if (cleaned.startsWith("public/")) return `/${cleaned.replace(/^public\//, "")}`;
+  return `/images/${cleaned}`;
+};
+
+const src = normalizeSrc(rawName);
+const hasImage = Boolean(src);
+---
+
+<div class="not-prose my-6">
+  <figure>
+    {
+      hasImage ? (
+        <img
+          src={src}
+          alt={alt || caption || name || "Documentation screenshot"}
+          loading="lazy"
+          class="w-full rounded-lg border border-border shadow"
+        />
+      ) : (
+        <div
+          class="flex min-h-[var(--docs-img-height)] items-center justify-center rounded-lg border border-dashed border-border bg-theme-light px-6 text-center text-sm text-text shadow"
+          style={`--docs-img-height:${height}`}
+        >
+          <span>
+            Placeholder image
+            {label ? (
+              <>
+                {" "}
+                <code>/images/{label}</code>
+              </>
+            ) : (
+              ". Set the `name` prop to a file in /public/images."
+            )}
+          </span>
+        </div>
+      )
+    }
+    {caption ? (
+      <figcaption class="mt-2 text-sm text-text">{caption}</figcaption>
+    ) : null}
+  </figure>
+</div>

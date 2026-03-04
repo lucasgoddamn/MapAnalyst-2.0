@@ -1,0 +1,109 @@
+---
+import Base from "@/layouts/Base.astro";
+
+export interface DocsNavItem {
+  text: string;
+  href: string;
+}
+
+export interface DocsNavGroup {
+  title: string;
+  items: DocsNavItem[];
+}
+
+export interface DocsFooterLink {
+  text: string;
+  href: string;
+}
+
+const {
+  title,
+  description,
+  sidebarTitle = "Docs",
+  nav = [],
+  footerLinks = [],
+} = Astro.props;
+---
+
+<Base title={title} description={description}>
+  <section class="section">
+    <div class="container">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="docs-sidebar__card rounded-lg border border-border bg-theme-light p-6 shadow">
+            <p class="mb-4 text-sm font-semibold text-dark">{sidebarTitle}</p>
+            <nav aria-label="Docs">
+              {
+                nav.map((group: DocsNavGroup) => (
+                  <div class="mb-5">
+                    <p class="mb-2 text-xs uppercase tracking-wide text-text">
+                      {group.title}
+                    </p>
+                    <ul class="space-y-1">
+                      {group.items.map((item) => (
+                        <li>
+                          <a
+                            href={item.href}
+                            class="block text-sm text-text hover:text-primary"
+                          >
+                            {item.text}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))
+              }
+            </nav>
+            {
+              footerLinks.length ? (
+                <div class="mt-6 border-t border-border pt-4">
+                  <p class="mb-3 text-xs uppercase tracking-wide text-text">
+                    Back
+                  </p>
+                  <div class="space-y-2">
+                    {footerLinks.map((link: DocsFooterLink) => (
+                      <a
+                        href={link.href}
+                        class="block rounded-md border border-primary px-3 py-2 text-center text-sm font-semibold text-primary transition hover:bg-primary hover:text-white"
+                      >
+                        {link.text}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              ) : null
+            }
+          </div>
+        </aside>
+        <div class="min-w-0">
+          <slot />
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .docs-layout {
+    display: grid;
+    grid-template-columns: minmax(220px, 260px) minmax(0, 1fr);
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .docs-sidebar__card {
+    position: sticky;
+    top: 6rem;
+  }
+
+  @media (max-width: 1023px) {
+    .docs-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .docs-sidebar__card {
+      position: static;
+    }
+  }
+</style>

@@ -1,0 +1,733 @@
+---
+/* (no frontmatter changes) */
+---
+
+<div class="mx-auto w-[90%] mt-6 border rounded-lg bg-white dark:bg-gray-800">
+  <!-- Tab headers -->
+  <div class="flex border-b border-gray-300 dark:border-gray-700">
+    <button
+      data-tab="distortion"
+      class="px-4 py-2 -mb-px border-b-2 border-blue-500 font-medium text-sm"
+      type="button"
+    >
+      Distortion Grid
+    </button>
+    <button
+      data-tab="displacements"
+      class="px-4 py-2 -mb-px border-b-2 border-transparent hover:border-gray-300 text-sm"
+      type="button"
+    >
+      Displacements
+    </button>
+    <button
+      data-tab="isolines"
+      class="px-4 py-2 -mb-px border-b-2 border-transparent hover:border-gray-300 text-sm"
+      type="button"
+    >
+      Isolines
+    </button>
+  </div>
+
+  <div class="flex">
+    <!-- Left: tab contents -->
+    <div class="w-2/3 p-4 space-y-4 text-sm">
+      <!-- Distortion Grid -->
+      <div id="tab-distortion" class="space-y-3">
+        <div class="flex items-center space-x-4">
+          <label><input id="dg-show" type="checkbox" /> Show</label>
+          <label
+            ><input id="dg-show-undistorted" type="checkbox" /> Show undistorted
+            Grid</label
+          >
+        </div>
+
+        <div class="flex items-center space-x-2">
+          <label for="dg-mesh-size">Mesh Size:</label>
+          <input
+            id="dg-mesh-size"
+            type="number"
+            class="border rounded px-1 w-24"
+          />
+          <select id="dg-mesh-unit" class="border rounded px-1">
+            <option value="m">m</option>
+            <option value="deg">°</option>
+          </select>
+        </div>
+
+        <div class="flex items-center space-x-2">
+          <label for="dg-extent">Extent:</label>
+          <select id="dg-extent" class="border rounded px-1">
+            <option value="rectangular">Rectangular</option>
+            <option value="aroundPoints">Around Points</option>
+            <option value="customPolygon">Custom Polygon</option>
+          </select>
+        </div>
+
+        <div class="flex items-center space-x-2">
+          <label for="dg-smoothness">Smoothness:</label>
+          <input
+            id="dg-smoothness"
+            type="range"
+            min="0"
+            max="100"
+            class="flex-1"
+          />
+        </div>
+
+        <div class="flex items-center space-x-2">
+          <label for="dg-color">Appearance:</label>
+          <input id="dg-color" type="color" value="#444444" />
+          <select id="dg-thickness" class="border rounded px-1">
+            <option>0.25 pt</option>
+            <option>0.5 pt</option>
+            <option selected>1 pt</option>
+            <option>2 pt</option>
+            <option>3 pt</option>
+            <option>5 pt</option>
+            <option>10 pt</option>
+          </select>
+        </div>
+
+        <div class="flex items-center space-x-2">
+          <label for="dg-label-size">Labels:</label>
+          <select id="dg-label-size" class="border rounded px-1">
+            <option>5 pt</option>
+            <option selected>10 pt</option>
+            <option>15 pt</option>
+            <option>20 pt</option>
+          </select>
+          <label for="dg-label-frequency">Frequency:</label>
+          <select id="dg-label-frequency" class="border rounded px-1">
+            <option>1</option><option>2</option><option>3</option>
+            <option selected>5</option><option>6</option><option>10</option
+            ><option>20</option>
+          </select>
+        </div>
+
+        <div class="flex items-center space-x-2">
+          <label for="dg-uncertainty">Uncertain Areas:</label>
+          <input
+            id="dg-uncertainty"
+            type="range"
+            min="0"
+            max="100"
+            class="flex-1"
+          />
+        </div>
+
+        <div class="pt-1">
+          <button
+            id="dg-more-btn"
+            type="button"
+            class="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600"
+          >
+            More…
+          </button>
+        </div>
+      </div>
+
+      <!-- Displacements -->
+      <div id="tab-displacements" class="hidden space-y-3">
+        <label><input id="disp-show" type="checkbox" /> Show</label>
+
+        <div class="flex items-center space-x-2">
+          <label for="disp-mode">Mode:</label>
+          <select id="disp-mode" class="border rounded px-1">
+            <option value="vectors">Vectors</option>
+            <option value="circles">Circles</option>
+            <option value="both">Vectors &amp; Circles</option>
+          </select>
+        </div>
+
+        <div class="flex items-center space-x-2">
+          <label for="disp-scale">Scale Factor:</label>
+          <input
+            id="disp-scale"
+            type="number"
+            step="0.1"
+            class="border rounded px-1 w-24"
+            value="1.0"
+          />
+        </div>
+
+        <div class="flex items-center space-x-4">
+          <label
+            ><input id="disp-outliers" type="checkbox" /> Mark Outliers (Length &gt;
+            3σ)</label
+          >
+          <input
+            id="disp-outlier-color"
+            type="color"
+            title="Outlier Color"
+            value="#ff0000"
+          />
+        </div>
+
+        <div class="flex items-center space-x-2">
+          <label for="disp-color">Displacement Color:</label>
+          <input id="disp-color" type="color" value="#000000" />
+          <label for="disp-thickness">Thickness:</label>
+          <select id="disp-thickness" class="border rounded px-1">
+            <option>0.25 pt</option><option>0.5 pt</option><option selected
+              >1 pt</option
+            >
+            <option>2 pt</option><option>3 pt</option><option>5 pt</option
+            ><option>10 pt</option>
+          </select>
+        </div>
+
+        <div class="flex items-center space-x-2">
+          <label
+            ><input id="disp-full-circles" type="checkbox" /> Full Circles</label
+          >
+          <input
+            id="disp-circle-color"
+            type="color"
+            title="Full Circle Color"
+            value="#ffffff"
+          />
+        </div>
+      </div>
+
+      <!-- Isolines -->
+      <div id="tab-isolines" class="hidden space-y-4">
+        <fieldset class="border p-2 rounded">
+          <legend class="px-1">Scale</legend>
+          <label><input id="iso-scale-show" type="checkbox" /> Show</label>
+          <div class="flex items-center space-x-2">
+            <span>Interval:</span>
+            <input
+              id="iso-scale-interval1"
+              type="number"
+              class="border rounded px-1 w-24"
+              value="5000"
+            />
+            <input id="iso-scale-color1" type="color" value="#222222" />
+            <select id="iso-scale-thick1" class="border rounded px-1">
+              <option>0.25 pt</option><option>0.5 pt</option><option selected
+                >1 pt</option
+              >
+              <option>2 pt</option><option>3 pt</option><option>5 pt</option
+              ><option>10 pt</option>
+            </select>
+          </div>
+        </fieldset>
+
+        <fieldset class="border p-2 rounded">
+          <legend class="px-1">Rotation</legend>
+          <label><input id="iso-rot-show" type="checkbox" /> Show</label>
+          <div class="flex items-center space-x-2">
+            <span>Interval:</span>
+            <input
+              id="iso-rot-interval"
+              type="number"
+              class="border rounded px-1 w-24"
+              value="5"
+            />
+            <input id="iso-rot-color" type="color" value="#222222" />
+            <select id="iso-rot-thick" class="border rounded px-1">
+              <option>0.25 pt</option><option>0.5 pt</option><option selected
+                >1 pt</option
+              >
+              <option>2 pt</option><option>3 pt</option><option>5 pt</option
+              ><option>10 pt</option>
+            </select>
+          </div>
+        </fieldset>
+
+        <div class="flex items-center space-x-2">
+          <label for="iso-radius">Radius of Influence:</label>
+          <input
+            id="iso-radius"
+            type="number"
+            class="border rounded px-1 w-28"
+            value="10000"
+          />
+          <span>[m]</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Selected Points & Info -->
+    <div
+      class="w-1/3 p-4 border-l border-gray-300 dark:border-gray-700 space-y-6 text-sm"
+    >
+      <div>
+        <div class="flex items-center mb-2">
+          <h3 class="font-semibold mr-2">Selected Points</h3>
+          <button
+            id="btn-list-links-panel"
+            class="ml-2 px-2 py-1 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded text-xs flex items-center"
+            title="List Linked Points"
+            type="button"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-4 h-4 mr-1"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+            List
+          </button>
+        </div>
+
+        <button
+          id="btn-link"
+          disabled
+          class="px-2 py-1 bg-gray-200 text-white rounded text-sm mb-2"
+          type="button"
+        >
+          Link
+        </button>
+
+        <div>
+          Old Map: X: <span id="sel-old-x">-</span>, Y: <span id="sel-old-y"
+            >-</span
+          >
+        </div>
+        <div>
+          New Map: X: <span id="sel-new-x">-</span>, Y: <span id="sel-new-y"
+            >-</span
+          >
+        </div>
+
+        <div class="mt-2">
+          Selected Link: <em id="selected-link-name">-</em>
+        </div>
+
+        <button
+          id="btn-rename"
+          disabled
+          class="mt-1 px-2 py-1 bg-gray-200 text-white rounded text-sm"
+          type="button"
+        >
+          Rename
+        </button>
+      </div>
+
+      <div>
+        <h3 class="font-semibold mb-2 flex items-center">
+          Old Map Information
+        </h3>
+        <div>Scale: <span id="info-scale">-</span></div>
+        <div>Rotation: <span id="info-rotation">-</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Distortion Grid Options Modal -->
+<div
+  id="dg-options-modal"
+  class="hidden fixed inset-0 z-[10000] items-center justify-center bg-black/60"
+>
+  <div
+    class="bg-neutral-900 text-white rounded-xl shadow-2xl w-full max-w-2xl mx-4 p-5 relative"
+  >
+    <button
+      id="dgopt-close"
+      class="absolute top-3 right-3 text-gray-400 hover:text-white text-xl"
+      aria-label="Close"
+      type="button">✕</button
+    >
+    <h3 class="text-xl font-semibold mb-3">Distortion Grid Options</h3>
+
+    <!-- Tabs -->
+    <div class="border-b border-neutral-700 mb-3 flex gap-2">
+      <button
+        data-dgopt-tab="uncertainty"
+        class="dgopt-tab active px-3 py-2 rounded-t bg-neutral-800"
+        >Uncertainty</button
+      >
+      <button
+        data-dgopt-tab="exaggeration"
+        class="dgopt-tab px-3 py-2 rounded-t hover:bg-neutral-800"
+        >Exaggeration</button
+      >
+      <button
+        data-dgopt-tab="offset"
+        class="dgopt-tab px-3 py-2 rounded-t hover:bg-neutral-800"
+        >Offset</button
+      >
+    </div>
+
+    <!-- Panels -->
+    <div id="dgopt-panel-uncertainty" class="space-y-3">
+      <div class="flex items-center gap-3">
+        <label for="dgopt-quantile" class="min-w-[12rem]"
+          >Uncertainty Quantile:</label
+        >
+        <input
+          id="dgopt-quantile"
+          type="range"
+          min="0"
+          max="100"
+          class="flex-1"
+        />
+        <span id="dgopt-quantile-val" class="w-12 text-right"></span>
+      </div>
+      <p class="text-sm text-neutral-300">
+        Uncertain areas of the distortion grid are shown with transparency. Use
+        the “Uncertain Areas” slider in the main window to adjust the
+        transparency value.
+      </p>
+      <p class="text-sm text-neutral-300">
+        Grid nodes are considered uncertain if they are far away from any
+        control point. To decide whether a grid node is far away, the distance
+        to the closest control point is computed and then compared to a
+        reference distance. To compute this reference distance, for each control
+        point its shortest distance is computed, then a quantile of all shortest
+        distances is computed. The upper quartile at 75% is the default
+        quantile.
+      </p>
+    </div>
+
+    <div id="dgopt-panel-exaggeration" class="hidden space-y-3">
+      <div class="flex items-center gap-3">
+        <label for="dgopt-exaggeration" class="min-w-[12rem]"
+          >Exaggeration Factor</label
+        >
+        <input
+          id="dgopt-exaggeration"
+          type="number"
+          step="0.1"
+          class="border rounded px-2 py-1 text-black w-28"
+        />
+      </div>
+      <p class="text-sm text-neutral-300">
+        Undulations in the distortion grid are enforced when the exaggeration
+        factor is larger than 1 and diminished when smaller than 1.
+      </p>
+      <p class="text-sm text-neutral-300">
+        The exaggeration factor should be set to 1 in most cases. A factor
+        different to 1 is only useful when maps with very low distortion are
+        analyzed. In such cases, an exaggeration factor larger than 1 can show
+        otherwise unseen undulations.
+      </p>
+    </div>
+
+    <div id="dgopt-panel-offset" class="hidden space-y-3">
+      <div class="flex items-center gap-3">
+        <label for="dgopt-off-x" class="min-w-[12rem]">Horizontal Offset</label>
+        <input
+          id="dgopt-off-x"
+          type="number"
+          step="0.1"
+          class="border rounded px-2 py-1 text-black w-28"
+        />
+      </div>
+      <div class="flex items-center gap-3">
+        <label for="dgopt-off-y" class="min-w-[12rem]">Vertical Offset</label>
+        <input
+          id="dgopt-off-y"
+          type="number"
+          step="0.1"
+          class="border rounded px-2 py-1 text-black w-28"
+        />
+      </div>
+      <p class="text-sm text-neutral-300">
+        Grid lines are usually placed at multiples of the mesh size. If the
+        horizontal or vertical offset differs from 0, grid lines are computed at
+        intermediate positions.
+      </p>
+      <p class="text-sm text-neutral-300">
+        If the offset values are larger than the mesh size, the grid is shifted
+        by the remainder of the following division: offset / mesh size.
+      </p>
+      <p class="text-sm text-neutral-300">
+        For a grid along lines of equal longitude and latitude, the offsets must
+        be in degrees.
+      </p>
+    </div>
+
+    <div class="mt-5 flex justify-end gap-3">
+      <button
+        id="dgopt-ok"
+        class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded">OK</button
+      >
+      <button
+        id="dgopt-cancel"
+        class="px-4 py-2 bg-neutral-700 hover:bg-neutral-600 rounded"
+        >Cancel</button
+      >
+    </div>
+  </div>
+</div>
+
+<style>
+  .dgopt-tab.active {
+    background-color: rgb(38 38 38);
+  }
+</style>
+
+<script>
+  // @ts-check
+
+  // ------- tiny DOM helpers (JS-only, no TS syntax)
+
+  /** @param {string} id */
+  const $ = (id: any) => document.getElementById(id);
+
+  /** Get string value from input/select (or null) */
+  /** @param {string} id */
+  const getVal = (id: any) => {
+    const el = $(id);
+    if (
+      el instanceof HTMLInputElement ||
+      el instanceof HTMLSelectElement ||
+      el instanceof HTMLTextAreaElement
+    ) {
+      return el.value;
+    }
+    return null;
+  };
+
+  /** Get number from input/select with fallback */
+  /** @param {string} id @param {number} fallback */
+  const getNum = (id: any, fallback: any) => {
+    const v = getVal(id);
+    const n = v !== null && v !== "" ? Number(v) : NaN;
+    return Number.isFinite(n) ? n : fallback;
+  };
+
+  /** Get checkbox checked flag */
+  /** @param {string} id */
+  const getChecked = (id: any) => {
+    const el = $(id);
+    return !!(
+      el instanceof HTMLInputElement &&
+      el.type === "checkbox" &&
+      el.checked
+    );
+  };
+
+  /** Set value into an input/select if present */
+  /** @param {string} id @param {string|number} v */
+  const setVal = (id: any, v: any) => {
+    const el = $(id);
+    if (
+      el instanceof HTMLInputElement ||
+      el instanceof HTMLSelectElement ||
+      el instanceof HTMLTextAreaElement
+    ) {
+      el.value = String(v);
+    }
+  };
+
+  // --- Tabs (avoid .dataset; use getAttribute so Element is fine)
+  /** @type {NodeListOf<Element>} */
+  const tabButtons = document.querySelectorAll("[data-tab]");
+  tabButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const tab = btn.getAttribute("data-tab") || "";
+      document.querySelectorAll("[id^='tab-']").forEach((panel) => {
+        if (panel instanceof HTMLElement) {
+          if (panel.id === `tab-${tab}`) panel.classList.remove("hidden");
+          else panel.classList.add("hidden");
+        }
+      });
+      tabButtons.forEach((b) => {
+        if (!(b instanceof HTMLElement)) return;
+        if (b === btn) {
+          b.classList.replace("border-transparent", "border-blue-500");
+        } else {
+          b.classList.replace("border-blue-500", "border-transparent");
+        }
+      });
+    });
+  });
+
+  // Keep "List" button behaviour consistent with Toolbar
+  $("btn-list-links-panel")?.addEventListener("click", () => {
+    window.dispatchEvent(new CustomEvent("mapanalyst:show-links"));
+  });
+
+  // ===============================
+  // Settings Bus (+ Distortion Grid Options)
+  // ===============================
+  (function createSettingsBus() {
+    const dgOptions = {
+      uncertaintyQuantile: 75,
+      exaggerationFactor: 1,
+      offsetX: 0,
+      offsetY: 0,
+    };
+
+    // Defaults
+    const showEl = $("dg-show");
+    if (showEl instanceof HTMLInputElement) showEl.checked = true;
+    if (!getVal("dg-mesh-size")) setVal("dg-mesh-size", 5000);
+    if (!getVal("dg-mesh-unit")) setVal("dg-mesh-unit", "m");
+    if (!getVal("dg-extent")) setVal("dg-extent", "rectangular");
+    setVal("dg-smoothness", 100);
+    if (!getVal("dg-label-size")) setVal("dg-label-size", "10 pt");
+    if (!getVal("dg-label-frequency")) setVal("dg-label-frequency", 5);
+    if (!getVal("dg-uncertainty")) setVal("dg-uncertainty", 0);
+
+    if (!getVal("disp-mode")) setVal("disp-mode", "vectors");
+    if (!getVal("disp-scale")) setVal("disp-scale", 1.0);
+
+    if (!getVal("iso-scale-interval1")) setVal("iso-scale-interval1", 0.5);
+    if (!getVal("iso-rot-interval")) setVal("iso-rot-interval", 1);
+    if (!getVal("iso-radius")) setVal("iso-radius", 500);
+
+    // Modal open/close
+    const openDgOptions = () => {
+      setVal("dgopt-quantile", String(dgOptions.uncertaintyQuantile));
+      const qv = $("dgopt-quantile-val");
+      if (qv) qv.textContent = `${dgOptions.uncertaintyQuantile}%`;
+      setVal("dgopt-exaggeration", String(dgOptions.exaggerationFactor));
+      setVal("dgopt-off-x", String(dgOptions.offsetX));
+      setVal("dgopt-off-y", String(dgOptions.offsetY));
+      const m = $("dg-options-modal");
+      if (m instanceof HTMLElement) {
+        m.classList.remove("hidden");
+        m.classList.add("flex");
+      }
+    };
+    const closeDgOptions = () => {
+      const m = $("dg-options-modal");
+      if (m instanceof HTMLElement) {
+        m.classList.add("hidden");
+        m.classList.remove("flex");
+      }
+    };
+
+    $("dg-more-btn")?.addEventListener("click", openDgOptions);
+    $("dgopt-close")?.addEventListener("click", closeDgOptions);
+    $("dgopt-cancel")?.addEventListener("click", closeDgOptions);
+    $("dg-options-modal")?.addEventListener("mousedown", (e) => {
+      const m = $("dg-options-modal");
+      if (e.target === m) closeDgOptions();
+    });
+
+    // Tabs inside modal
+    /** @type {NodeListOf<Element>} */
+    const optTabs = document.querySelectorAll(".dgopt-tab");
+    optTabs.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        optTabs.forEach(
+          (b) => b instanceof HTMLElement && b.classList.remove("active")
+        );
+        btn instanceof HTMLElement && btn.classList.add("active");
+        const t = btn.getAttribute("data-dgopt-tab");
+        ["uncertainty", "exaggeration", "offset"].forEach((k) => {
+          const p = $(`dgopt-panel-${k}`);
+          if (p) p.classList.toggle("hidden", k !== t);
+        });
+      });
+    });
+
+    // live display value for quantile
+    $("dgopt-quantile")?.addEventListener("input", () => {
+      const inp = $("dgopt-quantile");
+      const out = $("dgopt-quantile-val");
+      if (inp instanceof HTMLInputElement && out) {
+        out.textContent = `${inp.value}%`;
+      }
+    });
+
+    // Commit options
+    $("dgopt-ok")?.addEventListener("click", () => {
+      dgOptions.uncertaintyQuantile = getNum("dgopt-quantile", 75);
+      dgOptions.exaggerationFactor = getNum("dgopt-exaggeration", 1);
+      dgOptions.offsetX = getNum("dgopt-off-x", 0);
+      dgOptions.offsetY = getNum("dgopt-off-y", 0);
+      broadcast();
+      closeDgOptions();
+    });
+
+    const readSettings = () => ({
+      distortionGrid: {
+        show: getChecked("dg-show"),
+        showUndistorted: getChecked("dg-show-undistorted"),
+        meshSize: getVal("dg-mesh-size") ? getNum("dg-mesh-size", 0) : null,
+        meshUnit: getVal("dg-mesh-unit") || "m",
+        extent: getVal("dg-extent") || "rectangular",
+        smoothness: getVal("dg-smoothness") ? getNum("dg-smoothness", 50) : 50,
+        color: getVal("dg-color") || "#444444",
+        thickness: getVal("dg-thickness") || "1 pt",
+        labelSize: getVal("dg-label-size") || "10 pt",
+        labelFrequency: getVal("dg-label-frequency")
+          ? getNum("dg-label-frequency", 5)
+          : 5,
+        uncertainty: getVal("dg-uncertainty") ? getNum("dg-uncertainty", 0) : 0,
+        options: {
+          uncertaintyQuantile: dgOptions.uncertaintyQuantile,
+          exaggerationFactor: dgOptions.exaggerationFactor,
+          offsetX: dgOptions.offsetX,
+          offsetY: dgOptions.offsetY,
+        },
+      },
+      displacements: {
+        show: getChecked("disp-show"),
+        mode: getVal("disp-mode") || "vectors",
+        scaleFactor: getVal("disp-scale") ? getNum("disp-scale", 1.0) : 1.0,
+        markOutliers: getChecked("disp-outliers"),
+        outlierColor: getVal("disp-outlier-color") || "#ff0000",
+        color: getVal("disp-color") || "#000000",
+        thickness: getVal("disp-thickness") || "1 pt",
+        fullCircles: getChecked("disp-full-circles"),
+        circleColor: getVal("disp-circle-color") || "#ffffff",
+      },
+      isolines: {
+        scale: {
+          show: getChecked("iso-scale-show"),
+          interval1: getVal("iso-scale-interval1")
+            ? getNum("iso-scale-interval1", 5000)
+            : 5000,
+          color1: getVal("iso-scale-color1") || "#222222",
+          thickness1: getVal("iso-scale-thick1") || "1 pt",
+        },
+        rotation: {
+          show: getChecked("iso-rot-show"),
+          interval: getVal("iso-rot-interval")
+            ? getNum("iso-rot-interval", 5)
+            : 5,
+          color: getVal("iso-rot-color") || "#222222",
+          thickness: getVal("iso-rot-thick") || "1 pt",
+        },
+        radiusOfInfluence: getVal("iso-radius")
+          ? getNum("iso-radius", 10000)
+          : 10000,
+      },
+    });
+
+    const broadcast = () => {
+      const detail = readSettings();
+      window.dispatchEvent(
+        new CustomEvent("mapanalyst:settings-changed", { detail })
+      );
+    };
+
+    // Global accessor
+    window.MapAnalyst = window.MapAnalyst || {};
+    window.MapAnalyst.getSettings = () => readSettings();
+
+    // Listen on all relevant controls
+    document.querySelectorAll("input, select, button").forEach((el) => {
+      const handler = () => broadcast();
+      el.addEventListener?.("change", handler);
+
+      if (el instanceof HTMLInputElement) {
+        if (
+          el.type === "range" ||
+          el.type === "color" ||
+          el.type === "number"
+        ) {
+          el.addEventListener("input", handler);
+        }
+      }
+    });
+
+    // Initial emit
+    broadcast();
+  })();
+</script>
