@@ -7,7 +7,6 @@ import Toolbar from "@/layouts/components/Toolbar.astro";
 import MapTools from "@/layouts/components/MapTools.astro";
 import MapInteractions from "@/components/MapInteractions.astro";
 import MapSettings from "@/layouts/components/MapSettings.astro";
-import ComputeBridge from "@/layouts/components/ComputeBridge.astro";
 
 const entry = (await getEntry(
   "mapanalyst",
@@ -80,7 +79,6 @@ const { title, description, call_to_action } = entry.data;
   <MapInteractions />
   <!-- Distortion / Displacement / Isolines settings panel -->
   <MapSettings />
-  <ComputeBridge />
 
   <Cta cta={call_to_action} />
 </Base>

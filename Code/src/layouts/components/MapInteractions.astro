@@ -318,12 +318,12 @@
           <button class="absolute top-2 right-3 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200" id="suggestion-config-close" aria-label="Close">✕</button>
           <h2 class="text-xl font-semibold">Suggested Links Settings</h2>
           <div class="space-y-3">
-            <label class="block text-sm font-medium">Minimum distance between suggestions (meters)</label>
+            <label class="block text-sm font-medium">Minimum distance between suggestions (m for OSM, px for image refs)</label>
             <input type="number" min="0" step="10" id="suggestion-config-min-dist" class="w-full rounded border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-2" value="${suggestionConfig.minDistance || 0}" />
           </div>
           <div class="space-y-3">
             <label class="block text-sm font-medium">Maximum number of suggestions</label>
-            <input type="number" min="1" max="200" step="1" id="suggestion-config-max-count" class="w-full rounded border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-2" value="${suggestionConfig.maxSuggestions || 50}" />
+            <input type="number" min="1" max="80" step="1" id="suggestion-config-max-count" class="w-full rounded border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-2" value="${suggestionConfig.maxSuggestions || 50}" />
           </div>
           <div class="space-y-3">
             <label class="block text-sm font-medium">Marker color</label>
@@ -350,7 +350,7 @@
       const color = document.getElementById("suggestion-config-color")?.value || suggestionConfig.color;
       suggestionConfig = {
         minDistance: Math.max(0, minDist),
-        maxSuggestions: Math.max(1, Math.min(200, maxCount)),
+        maxSuggestions: Math.max(1, Math.min(80, maxCount)),
         color: normalizeHexColor(color, suggestionConfig.color),
       };
       close();
@@ -3713,7 +3713,7 @@ function restoreHistory(idx) {
               ? `ocr=${diag.ocr_matches}/${diag.ocr_candidates ?? diag.ocr_matches}`
               : null,
             diag.min_distance != null && diag.min_distance > 0
-              ? `min_dist=${diag.min_distance}m`
+              ? `min_dist=${diag.min_distance}${diag.min_distance_unit || ""}`
               : null,
             diag.max_suggestions != null ? `max=${diag.max_suggestions}` : null,
             diag.elapsed_ms != null ? `elapsed=${diag.elapsed_ms}ms` : null,

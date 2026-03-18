@@ -69,11 +69,16 @@ def _robust_weights(norm_v: "np.ndarray", kind: str, params: Dict) -> "np.ndarra
         return w
 
     if kind == "v":
-        # Tukey's biweight with tuning k; e is not used directly here, but kept for parity
+        # Tukey's biweight with tuning k and contamination factor e.
+        # e in [0,1] tightens the cutoff and makes the estimator more robust
+        # against outliers when contamination is assumed to be higher.
         k = float(params.get("v", {}).get("k", 1.5))
+        e = float(params.get("v", {}).get("e", 0.6))
+        e = max(0.0, min(1.0, e))
+        k_eff = max(1e-6, k * (1.0 - 0.5 * e))
         w = np.zeros_like(r)
-        mask = r < k
-        u = r[mask] / k
+        mask = r < k_eff
+        u = r[mask] / k_eff
         w[mask] = (1 - u**2) ** 2
         return w
 

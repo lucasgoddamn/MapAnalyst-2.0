@@ -5,14 +5,10 @@ draft: false
 
 Welcome to MapAnalyst Web!
 
-MapAnalyst 2.0 is Copyright 2025 by
+MapAnalyst 2.0 is created by
 Lucas Zetzsche, Leipzig University, Germany
 
-This program is free software;
-you can redistribute it and/or modify it
-under the terms of the GNU General Public
-License version 3 as published by the
-Free Software Foundation.
+No License yet
 
 For more information:
-https://gitlab.com/lucasgoddamn/masterarbeit
+https://github.com/lucasgoddamn/MapAnalyst-2.0

@@ -557,10 +557,26 @@ def _deduplicate_suggestions_list(suggestions: List[Dict[str, Any]]) -> List[Dic
 
 def _enforce_min_distance(
     suggestions: List[Dict[str, Any]],
-    min_distance_m: float,
+    min_distance: float,
+    metric: str = "haversine",
 ) -> List[Dict[str, Any]]:
-    if min_distance_m <= 0:
+    if min_distance <= 0:
         return suggestions
+
+    metric_norm = str(metric or "haversine").lower()
+
+    def _distance(a: Dict[str, Any], b: Dict[str, Any]) -> float:
+        if metric_norm == "pixel":
+            dx = float(a["lng"]) - float(b["lng"])
+            dy = float(a["lat"]) - float(b["lat"])
+            return math.hypot(dx, dy)
+        return _haversine(
+            float(a["lat"]),
+            float(a["lng"]),
+            float(b["lat"]),
+            float(b["lng"]),
+        )
+
     filtered: List[Dict[str, Any]] = []
     for suggestion in suggestions:
         new_coords = suggestion.get("new")
@@ -572,13 +588,8 @@ def _enforce_min_distance(
             kept_coords = kept.get("new")
             if not kept_coords or "lat" not in kept_coords or "lng" not in kept_coords:
                 continue
-            dist = _haversine(
-                float(new_coords["lat"]),
-                float(new_coords["lng"]),
-                float(kept_coords["lat"]),
-                float(kept_coords["lng"]),
-            )
-            if dist < min_distance_m:
+            dist = _distance(new_coords, kept_coords)
+            if dist < min_distance:
                 keep = False
                 break
         if keep:
@@ -816,16 +827,28 @@ def generate_suggestions(payload: Dict[str, Any]) -> Dict[str, Any]:
     req_max_suggestions = max(1, min(SUGGESTION_LIMIT, req_max_suggestions))
 
     old_region = _load_upload_region(map_sources.get("old") or {}, polygons.get("old") or [], "old")
-    if (map_sources.get("new") or {}).get("type", "osm").lower() == "osm":
+    new_source_type = (map_sources.get("new") or {}).get("type", "osm").lower()
+    if new_source_type == "osm":
         new_region = _load_osm_region(map_sources.get("new") or {}, view.get("new") or {}, polygons.get("new") or [])
     else:
         new_region = _load_upload_region(map_sources.get("new") or {}, polygons.get("new") or [], "new")
+
+    min_distance_metric = "haversine" if new_source_type == "osm" else "pixel"
+    min_distance_unit = "m" if new_source_type == "osm" else "px"
 
     seeds_old, seeds_new = _extract_seed_pairs(payload, old_region, new_region)
     seed_transform, seed_inliers = _estimate_seed_transform(seeds_old, seeds_new)
 
     kpts_old, kpts_new, confidences, diag = _run_loftr_matching(old_region, new_region)
-    diag.update({"good": 0, "min_distance": req_min_distance, "max_suggestions": req_max_suggestions})  # will be filled below
+    diag.update(
+        {
+            "good": 0,
+            "min_distance": req_min_distance,
+            "min_distance_metric": min_distance_metric,
+            "min_distance_unit": min_distance_unit,
+            "max_suggestions": req_max_suggestions,
+        }
+    )  # will be filled below
 
     if kpts_old.size == 0 or kpts_new.size == 0:
         elapsed = int((time.time() - started) * 1000)
@@ -839,6 +862,8 @@ def generate_suggestions(payload: Dict[str, Any]) -> Dict[str, Any]:
                 "ocr_candidates": 0,
                 "ocr_matches": 0,
                 "min_distance": req_min_distance,
+                "min_distance_metric": min_distance_metric,
+                "min_distance_unit": min_distance_unit,
                 "max_suggestions": req_max_suggestions,
                 "elapsed_ms": elapsed,
             }
@@ -909,7 +934,7 @@ def generate_suggestions(payload: Dict[str, Any]) -> Dict[str, Any]:
 
     combined = suggestions_loftr + seed_suggestions + ocr_suggestions
     combined = _deduplicate_suggestions_list(combined)
-    combined = _enforce_min_distance(combined, req_min_distance)
+    combined = _enforce_min_distance(combined, req_min_distance, metric=min_distance_metric)
     if len(combined) > req_max_suggestions:
         combined = combined[:req_max_suggestions]
 
@@ -922,6 +947,8 @@ def generate_suggestions(payload: Dict[str, Any]) -> Dict[str, Any]:
             "ocr_candidates": ocr_diag.get("ocr_candidates", 0),
             "ocr_matches": ocr_diag.get("ocr_matches", 0),
             "min_distance": req_min_distance,
+            "min_distance_metric": min_distance_metric,
+            "min_distance_unit": min_distance_unit,
             "max_suggestions": req_max_suggestions,
             "elapsed_ms": elapsed,
         }

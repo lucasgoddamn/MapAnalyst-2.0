@@ -2,12 +2,10 @@
 
 This repository contains the implementation and supporting material for the master thesis project "MapAnalyst 2.0", a web-based continuation of MapAnalyst with AI-assisted control point suggestions for comparing historical and modern maps.
 
-The main application is split into:
+The repository is structured into:
 
 - `Code/`: the web application and backend service
-- `TextMa/`: thesis text, figures, and literature material
 - `Test/`: sample maps and test datasets
-- `VortragMa/`: presentation slides and assets
 
 ## What the application does
 
@@ -30,10 +28,8 @@ masterarbeit/
 |  |- public/               # static assets
 |  |- backend/              # FastAPI backend
 |  |- package.json          # frontend scripts and dependencies
-|  `- README.md             # original theme README from the starter template
-|- Test/                    # sample map pairs and linked point examples
-|- TextMa/                  # thesis source, PDF, images, references
-`- VortragMa/               # presentation material
+|  `- README.md             # application-specific setup notes
+`- Test/                    # sample map pairs and linked point examples
 ```
 
 ## Local development
@@ -149,7 +145,7 @@ These folders contain example raster maps and linked point files that are useful
 
 ## Project status
 
-This repository reflects a master thesis prototype and related research material. The app is functional as a local research/demo environment, but parts of the codebase still include starter-template remnants and thesis-specific assets.
+This repository reflects a master thesis prototype. The app is functional as a local research/demo environment, and parts of the codebase still include starter-template remnants.
 
 ## License
 

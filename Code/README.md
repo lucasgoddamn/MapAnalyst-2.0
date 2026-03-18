@@ -58,4 +58,4 @@ npm run preview
 ## Notes
 
 - Uploaded files and backend cache are under `backend/app/data/`.
-- This repository root has additional thesis assets (`TextMa/`, `Test/`, `VortragMa/`). See the root README for full project context.
+- Sample datasets are available in `../Test/`.
